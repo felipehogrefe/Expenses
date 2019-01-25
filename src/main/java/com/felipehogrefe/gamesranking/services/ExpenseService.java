@@ -1,6 +1,5 @@
 package com.felipehogrefe.gamesranking.services;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +18,12 @@ public class ExpenseService {
 		return obj;
 	}
 	
-	public List<Expense> getPlayersList(){		
+	public List<Expense> getExpenseList(){		
 		return expenseRepository.findAll(); 		
 	}
 	
-	public List<Expense> getListOfPlayersOrderedByVictory(){		
-		List<Expense> list = expenseRepository.findAll();
-		Collections.sort(list);
-		return list; 		
-	}
-	
-	public boolean addPlayer(Expense p) {
-		return changePlayer(p);
-	}
-	
-	public boolean addMatchToPlayer(Expense p) {	
-		
-		return changePlayer(p);
-	}
-	public boolean addVictoryToPlayer(Expense p) {	
-		
-		return changePlayer(p);
-	}
-	
-	private boolean changePlayer(Expense p) {
-		if(expenseRepository.save(p)!=null) return true;
+	public boolean editExpense(Expense e) {
+		if(expenseRepository.save(e)!=null) return true;
 		return false;
 	}
 }
