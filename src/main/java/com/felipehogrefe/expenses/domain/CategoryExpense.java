@@ -8,21 +8,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class MonthExpenses implements Serializable, Comparable<MonthExpenses>{
+public class CategoryExpense implements Serializable, Comparable<CategoryExpense>{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String mes_movimentacao;
+	private int category_code;
+	private String category_name;
 	private double total;
 	
+	
 
-	public MonthExpenses(Integer id, String mes_movimentacao, double total) {
+	
+	public CategoryExpense(Integer id, int category_code, String category_name, double total) {
 		super();
 		this.id = id;
-		this.mes_movimentacao = mes_movimentacao;
+		this.category_code = category_code;
+		this.category_name = category_name;
 		this.total = total;
 	}
 
@@ -42,7 +46,7 @@ public class MonthExpenses implements Serializable, Comparable<MonthExpenses>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MonthExpenses other = (MonthExpenses) obj;
+		CategoryExpense other = (CategoryExpense) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -52,7 +56,7 @@ public class MonthExpenses implements Serializable, Comparable<MonthExpenses>{
 	}
 
 	@Override
-	public int compareTo(MonthExpenses arg0) {
+	public int compareTo(CategoryExpense arg0) {
 		if(total>arg0.total) return 1;
 		else if(total<arg0.total) return -1;
 		return 0;
@@ -68,17 +72,31 @@ public class MonthExpenses implements Serializable, Comparable<MonthExpenses>{
 		this.id = id;
 	}
 
-	public String getMes_movimentacao() {
-		return mes_movimentacao;
+
+	public int getCategory_code() {
+		return category_code;
 	}
 
-	public void setMes_movimentacao(String mes_movimentacao) {
-		this.mes_movimentacao = mes_movimentacao;
+
+	public void setCategory_code(int category_code) {
+		this.category_code = category_code;
 	}
+
+
+	public String getCategory_name() {
+		return category_name;
+	}
+
+
+	public void setCategory_name(String category_name) {
+		this.category_name = category_name;
+	}
+
 
 	public double getTotal() {
 		return total;
 	}
+
 
 	public void setTotal(double total) {
 		this.total = total;

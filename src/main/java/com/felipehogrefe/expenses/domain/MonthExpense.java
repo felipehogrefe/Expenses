@@ -8,25 +8,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class CategoryExpenses implements Serializable, Comparable<CategoryExpenses>{
+public class MonthExpense implements Serializable, Comparable<MonthExpense>{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	private int category_code;
-	private String category_name;
+	private String mes_movimentacao;
 	private double total;
 	
-	
 
-	
-	public CategoryExpenses(Integer id, int category_code, String category_name, double total) {
+	public MonthExpense(Integer id, String mes_movimentacao, double total) {
 		super();
 		this.id = id;
-		this.category_code = category_code;
-		this.category_name = category_name;
+		this.mes_movimentacao = mes_movimentacao;
 		this.total = total;
 	}
 
@@ -46,7 +42,7 @@ public class CategoryExpenses implements Serializable, Comparable<CategoryExpens
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CategoryExpenses other = (CategoryExpenses) obj;
+		MonthExpense other = (MonthExpense) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -56,7 +52,7 @@ public class CategoryExpenses implements Serializable, Comparable<CategoryExpens
 	}
 
 	@Override
-	public int compareTo(CategoryExpenses arg0) {
+	public int compareTo(MonthExpense arg0) {
 		if(total>arg0.total) return 1;
 		else if(total<arg0.total) return -1;
 		return 0;
@@ -72,31 +68,17 @@ public class CategoryExpenses implements Serializable, Comparable<CategoryExpens
 		this.id = id;
 	}
 
-
-	public int getCategory_code() {
-		return category_code;
+	public String getMes_movimentacao() {
+		return mes_movimentacao;
 	}
 
-
-	public void setCategory_code(int category_code) {
-		this.category_code = category_code;
+	public void setMes_movimentacao(String mes_movimentacao) {
+		this.mes_movimentacao = mes_movimentacao;
 	}
-
-
-	public String getCategory_name() {
-		return category_name;
-	}
-
-
-	public void setCategory_name(String category_name) {
-		this.category_name = category_name;
-	}
-
 
 	public double getTotal() {
 		return total;
 	}
-
 
 	public void setTotal(double total) {
 		this.total = total;

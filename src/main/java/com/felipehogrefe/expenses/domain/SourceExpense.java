@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class SourceExpenses implements Serializable, Comparable<SourceExpenses>{
+public class SourceExpense implements Serializable, Comparable<SourceExpense>{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -19,7 +19,7 @@ public class SourceExpenses implements Serializable, Comparable<SourceExpenses>{
 	private String source_name;
 	private double total;
 	
-	public SourceExpenses(Integer id, int source_code, String source_name, double total) {
+	public SourceExpense(Integer id, int source_code, String source_name, double total) {
 		super();
 		this.id = id;
 		this.source_code = source_code;
@@ -43,7 +43,7 @@ public class SourceExpenses implements Serializable, Comparable<SourceExpenses>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SourceExpenses other = (SourceExpenses) obj;
+		SourceExpense other = (SourceExpense) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -53,7 +53,7 @@ public class SourceExpenses implements Serializable, Comparable<SourceExpenses>{
 	}
 
 	@Override
-	public int compareTo(SourceExpenses arg0) {
+	public int compareTo(SourceExpense arg0) {
 		if(total>arg0.total) return 1;
 		else if(total<arg0.total) return -1;
 		return 0;

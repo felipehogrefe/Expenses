@@ -22,7 +22,6 @@ public class ExpensesApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		UrlToExpensesParser utep = new UrlToExpensesParser(url+(limit?("&limit="+limitTotal):""));
-		expenseRepository.saveAll(utep.getExpenses());
+		
 	}
 }
