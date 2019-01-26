@@ -8,6 +8,7 @@ import { Expense } from './expense/expense';
 })
 export class AppComponent {
   title = 'REFICE EXPENSES';
+  
   monthExpenses = [];
   categoryExpenses = [];
   sourceExpenses = [];
@@ -15,11 +16,6 @@ export class AppComponent {
   source = false
   category = false
   month = false
-
-
-  json : JSON;
-
-  expense = new Expense(this.json);
 
   showCategory():void{
     this.source = false

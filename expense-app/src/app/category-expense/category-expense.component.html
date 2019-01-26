@@ -1,15 +1,11 @@
-<input type="text" [(ngModel)]="task">
-<button type="button" (click)="add()">Add to list</button>
-<ul>
-  <li *ngFor="let item of tasks" [innerHtml]="item">
-    
-  </li>
-</ul>
+<div>
+    Category
+</div>
+<ul style="text-align: left">
+    <li *ngFor="let item of categoryExpenses">
+      {{item.category_name}} = {{item.total | currency:'BRL'}}
+    </li>
+  </ul>
 <br/>
-<div [hidden]="isAdmin">
-  Common user
-</div>
-<div [hidden]="!isAdmin">
-  Admin
-</div>
+
 

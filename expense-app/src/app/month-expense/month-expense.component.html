@@ -1,3 +1,10 @@
-<p>
-  month-expense works!
-</p>
+<div>
+    Month
+</div>
+<ul style="text-align: left">
+  <li *ngFor="let item of monthExpenses">
+    {{item.mes_movimentacao}} = {{item.total | currency:'BRL'}}
+  </li>
+</ul>
+<br/>
+

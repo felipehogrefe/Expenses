@@ -1,3 +1,8 @@
-<p>
-  source-expense works!
-</p>
+<div>
+    Source
+</div>
+<ul style="text-align: left">
+    <li *ngFor="let item of sourceExpenses">
+      {{item.source_name}} = {{item.total | currency:'BRL'}}
+    </li>
+  </ul>

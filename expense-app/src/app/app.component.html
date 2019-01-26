@@ -11,13 +11,23 @@
         <button type="button" class="button" (click)="showCategory()" style="margin:5px;">Expenses by category</button>
         <button type="button" class="button" (click)="showSource()" style="margin:5px;">Expenses by source</button>
       </div>
+
       <div *ngIf="category">
           <app-category-expense></app-category-expense>
-        </div>
+      </div>
+
+      <div *ngIf="month">
+          <app-month-expense></app-month-expense>
+      </div>
+
+      <div *ngIf="source">
+          <app-source-expense></app-source-expense>
+      </div>
+
     </th>
     <th class="topAlign">
       <div>
-          {{ expense | json}}
+          Graphs here
       </div>
     </th>      
   </tr>
