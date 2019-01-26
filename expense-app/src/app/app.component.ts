@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Expense } from './expense/expense';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,37 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'expense-app';
+  title = 'REFICE EXPENSES';
+  monthExpenses = [];
+  categoryExpenses = [];
+  sourceExpenses = [];
+
+  source = false
+  category = false
+  month = false
+
+
+  json : JSON;
+
+  expense = new Expense(this.json);
+
+  showCategory():void{
+    this.source = false
+    this.category = true
+    this.month = false
+  }
+
+  showSource():void{
+    this.source = true
+    this.category = false
+    this.month = false
+  }
+
+  showMonth():void{
+    this.source = false
+    this.category = false
+    this.month = true
+  }
+
+
 }

@@ -31,19 +31,18 @@ public class Tests {
 	
 	
 
-	private static final int limitTotal = 500;
 	
 
 	@Test
-	public void download100Records() {
-		ExpensesGetter eg = new ExpensesGetter(100, expenseRepository, categoryExpenseRepository, 
+	public void download200Records() {		
+		ExpensesGetter eg = new ExpensesGetter(100, expenseRepository, categoryExpenseRepository,
 				sourceExpenseRepository, monthExpenseRepository);
-		eg.getExpenses(limitTotal);
-				
+		eg.getExpenses(200);
+		
 		List<Expense> expenses = expenseRepository.findAll();
 		System.out.println(expenses.size());
 		
-		assertTrue(expenses.size()==limitTotal);
+		assertTrue(expenses.size()==200);
 	}
 	
 	@Test

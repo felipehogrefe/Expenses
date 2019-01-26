@@ -1,5 +1,7 @@
 package com.felipehogrefe.expenses;
 
+import java.awt.EventQueue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,10 +13,11 @@ import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
 import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
 
 @SpringBootApplication
-public class ExpensesApplication implements CommandLineRunner{
-	private static final int querySize = 100, limit = 1000;
-	//94178
-
+public class ExpensesApplication implements CommandLineRunner {
+	private static final int querySize = 100, limit = 200;
+	private static boolean isTest = false;
+	// 94178
+	
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	@Autowired
@@ -30,8 +33,16 @@ public class ExpensesApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, categoryExpenseRepository, 
-				sourceExpenseRepository, monthExpenseRepository);
-		eg.getExpenses(limit);
+		if(!isTest) {
+		EventQueue.invokeLater(() -> {
+			ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, categoryExpenseRepository,
+					sourceExpenseRepository, monthExpenseRepository);
+			eg.getExpenses(limit);
+		});
+		}
+	}
+	
+	public static int getLimit() {
+		return limit;
 	}
 }

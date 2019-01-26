@@ -51,8 +51,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 				", categoriaEconomicaCodigo=" + categoria_economica_codigo + ", fonteRecursoCodigo="+fonte_recurso_codigo+
 				", valorPago= "+valor_pago+"]";
 	}
-	
-	
+
 	public Integer getId() {
 		return id;
 	}	

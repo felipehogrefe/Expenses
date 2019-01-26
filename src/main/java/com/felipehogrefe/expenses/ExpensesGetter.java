@@ -1,6 +1,5 @@
 package com.felipehogrefe.expenses;
 
-import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -24,48 +23,48 @@ public class ExpensesGetter {
 	private CategoryExpenseRepository categoryExpenseRepository;
 	private SourceExpenseRepository sourceExpenseRepository;
 	private MonthExpenseRepository monthExpenseRepository;
-	private int querySize;
+	private int limit;
 
 	public ExpensesGetter(ExpenseRepository _expenseRepository) {
 		expenseRepository = _expenseRepository;
 	}
-	
-	public ExpensesGetter(int _querySize, ExpenseRepository _expenseRepository,
+
+	public ExpensesGetter(int _limit, ExpenseRepository _expenseRepository,
 			CategoryExpenseRepository _categoryExpenseRepository, SourceExpenseRepository _sourceExpenseRepository,
 			MonthExpenseRepository _monthExpenseRepository) {
-		querySize = _querySize;
+		limit = _limit;
 		expenseRepository = _expenseRepository;
 		categoryExpenseRepository = _categoryExpenseRepository;
 		sourceExpenseRepository = _sourceExpenseRepository;
 		monthExpenseRepository = _monthExpenseRepository;
 	}
 
-	public void getExpenses(int _limit) {
-		EventQueue.invokeLater(() -> {
-			try {
-				for (int i = 0; i < _limit; i += 100) {					
-					
-					UrlToExpensesParser utep = new UrlToExpensesParser("http://dados.recife.pe.gov.br/api/action/datastore_search?"
-							+ "resource_id=d4d8a7f0-d4be-4397-b950-f0c991438111&limit="+querySize+"&offset="+i);
-					
-					expenseRepository.saveAll(utep.getExpenses());
-					
+	public void getExpenses(int querySize) {
+		try {
+			for (int i = 0; i < limit; i += querySize) {
 
-					for (Expense e : utep.getExpenses()) {
-						
-						double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
+				UrlToExpensesParser utep = new UrlToExpensesParser(
+						"http://dados.recife.pe.gov.br/api/action/datastore_search?"
+								+ "resource_id=d4d8a7f0-d4be-4397-b950-f0c991438111&limit=" + querySize + "&offset="
+								+ i);
 
-						editCategory(e, expenseValue);
-						editMonth(e, expenseValue);
-						editSource(e, expenseValue);
-					}
+				expenseRepository.saveAll(utep.getExpenses());
+
+				for (Expense e : utep.getExpenses()) {
+
+					double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
+
+					editCategory(e, expenseValue);
+					editMonth(e, expenseValue);
+					editSource(e, expenseValue);
 				}
-
-			} catch (JSONException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		});
+
+		} catch (JSONException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void editCategory(Expense e, double expenseValue) {
