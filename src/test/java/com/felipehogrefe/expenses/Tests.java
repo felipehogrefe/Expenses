@@ -1,4 +1,4 @@
-package com.felipehogrefe.gamesranking;
+package com.felipehogrefe.expenses;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;

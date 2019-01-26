@@ -1,4 +1,4 @@
-package com.felipehogrefe.expenses.domain;
+package com.felipehogrefe.expenses;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.svenson.JSONParser;
+
+import com.felipehogrefe.expenses.domain.Expense;
 
 public class UrlToExpensesParser {
 	private String url;
