@@ -28,7 +28,6 @@ public class ExpensesGetter {
 
 	public ExpensesGetter(ExpenseRepository _expenseRepository) {
 		expenseRepository = _expenseRepository;
-		done = false;
 	}
 	
 	public ExpensesGetter(int _querySize, ExpenseRepository _expenseRepository,
