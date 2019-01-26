@@ -5,16 +5,24 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.felipehogrefe.expenses.repositories.CategoryExpenseRepository;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
+import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
+import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
 
 @SpringBootApplication
 public class ExpensesApplication implements CommandLineRunner{
-	private static final String url = "http://dados.recife.pe.gov.br/api/action/datastore_search?resource_id=d4d8a7f0-d4be-4397-b950-f0c991438111";
-	private static final boolean limit = true;
-	private static final int limitTotal = 5;
-	
+	private static final int querySize = 100, limit = 1000;
+	//94178
+
 	@Autowired
 	private ExpenseRepository expenseRepository;
+	@Autowired
+	private CategoryExpenseRepository categoryExpenseRepository;
+	@Autowired
+	private SourceExpenseRepository sourceExpenseRepository;
+	@Autowired
+	private MonthExpenseRepository monthExpenseRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpensesApplication.class, args);
@@ -22,6 +30,8 @@ public class ExpensesApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+		ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, categoryExpenseRepository, 
+				sourceExpenseRepository, monthExpenseRepository);
+		eg.getExpenses(limit);
 	}
 }

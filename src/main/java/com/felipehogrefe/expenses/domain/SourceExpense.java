@@ -3,8 +3,6 @@ package com.felipehogrefe.expenses.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -12,12 +10,13 @@ public class SourceExpense implements Serializable, Comparable<SourceExpense>{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
 	private int source_code;
 	private String source_name;
 	private double total;
+	
+	public SourceExpense() {}
 	
 	public SourceExpense(Integer id, int source_code, String source_name, double total) {
 		super();

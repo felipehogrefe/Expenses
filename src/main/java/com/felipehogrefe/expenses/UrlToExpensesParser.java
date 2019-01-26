@@ -36,6 +36,9 @@ public class UrlToExpensesParser {
 		try {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
+
+			System.out.println(url);
+			System.out.println(jsonText);
 			JSONObject json = new JSONObject(jsonText);
 			return json;
 		} finally {
@@ -50,6 +53,7 @@ public class UrlToExpensesParser {
 		parser.addTypeHint(".records[]", Expense.class);
 		Map<String, List<Expense>> result1 = parser.parse(Map.class, json.toString());
 		List<Expense> list = result1.get("records");
+		
 
 		return list;
 	}
