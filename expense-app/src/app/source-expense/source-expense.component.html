@@ -1,8 +1,16 @@
-<div>
-    Source
+<div class="div">
+    <table class="dataTable">
+        <thead>
+        <tr >
+            <th style="text-align: left">Fonte</th>
+            <th style="text-align: left">Valor</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr *ngFor="let item of sourceExpenses">
+            <td style="text-align: left">{{ item.source_name }}</td>
+            <td style="text-align: left">{{ item.total | currency:'BRL' }}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<ul style="text-align: left">
-    <li *ngFor="let item of sourceExpenses">
-      {{item.source_name}} = {{item.total | currency:'BRL'}}
-    </li>
-  </ul>

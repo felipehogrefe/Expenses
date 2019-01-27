@@ -1,12 +1,12 @@
 export class MonthExpense {
 
     id : number;
-    mes_movimentacao : string;
+    movimentation_month : string;
     total : number;
 
-    constructor(_id:number, mes:string, _total:number){
+    constructor(_id:number, month:string, _total:number){
         this.id = _id;
-        this.mes_movimentacao=mes;
+        this.movimentation_month=month;
         this.total=_total;
     }
 

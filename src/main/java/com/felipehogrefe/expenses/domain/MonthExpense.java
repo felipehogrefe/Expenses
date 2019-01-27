@@ -12,15 +12,15 @@ public class MonthExpense implements Serializable, Comparable<MonthExpense>{
 	@Id
 	private Integer id;
 	
-	private String mes_movimentacao;
+	private String movimentation_month;
 	private double total;
 	
 	public MonthExpense() {}
 
-	public MonthExpense(Integer id, String mes_movimentacao, double total) {
+	public MonthExpense(Integer id, String movimentation_month, double total) {
 		super();
 		this.id = id;
-		this.mes_movimentacao = mes_movimentacao;
+		this.movimentation_month = movimentation_month;
 		this.total = total;
 	}
 
@@ -61,17 +61,16 @@ public class MonthExpense implements Serializable, Comparable<MonthExpense>{
 		return id;
 	}
 
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getMes_movimentacao() {
-		return mes_movimentacao;
+	public String getMovimentation_month() {
+		return movimentation_month;
 	}
 
-	public void setMes_movimentacao(String mes_movimentacao) {
-		this.mes_movimentacao = mes_movimentacao;
+	public void setMovimentation_month(String movimentation_month) {
+		this.movimentation_month = movimentation_month;
 	}
 
 	public double getTotal() {

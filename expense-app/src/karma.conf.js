@@ -20,6 +20,15 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
+    paths: {
+      'ng2-charts': 'node_modules/ng2-charts/bundles/ng2-charts.umd.min.js'
+    },
+    packages: {
+      'ng2-charts': {
+          main: 'ng2-charts.js',
+          defaultExtension: 'js'
+        }
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,

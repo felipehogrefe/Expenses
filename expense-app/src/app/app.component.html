@@ -1,40 +1,49 @@
-
-
 <div style="margin:15px;" class="header">
-    {{ title }}
+  {{ title }}
 </div>
+
+
+
+
 <table class="fixed">
-  <tr >
+  <tr>
     <th class="topAlign">
-      <div >
-        <button type="button" class="button" (click)="showMonth()" style="margin:5px;">Expenses by month</button>
-        <button type="button" class="button" (click)="showCategory()" style="margin:5px;">Expenses by category</button>
-        <button type="button" class="button" (click)="showSource()" style="margin:5px;">Expenses by source</button>
+      <div>
+        <button type="button" class="button" (click)="showMonth()" style="margin:5px;">Gastos por mês</button>
+        <button type="button" class="button" (click)="showCategory()" style="margin:5px;">Gastos por categoria</button>
+        <button type="button" class="button" (click)="showSource()" style="margin:5px;">Gastos por fonte</button>
+        <button type="button" class="button" style="margin:5px;">Todos os dados</button>
       </div>
 
-      <div *ngIf="category">
+      <div style="margin-top: 5%; margin-left: 10%">
+        <div *ngIf="category">
           <app-category-expense></app-category-expense>
-      </div>
+        </div>
 
-      <div *ngIf="month">
+        <div *ngIf="month">
           <app-month-expense></app-month-expense>
-      </div>
+        </div>
 
-      <div *ngIf="source">
+        <div *ngIf="source">
           <app-source-expense></app-source-expense>
+        </div>
       </div>
 
     </th>
     <th class="topAlign">
       <div>
-          Graphs here
+        <div *ngIf="category">
+          <app-category-graph></app-category-graph>
+        </div>
+
+        <div *ngIf="month">
+          <app-month-graph></app-month-graph>
+        </div>
+
+        <div *ngIf="source">
+          <app-source-graph></app-source-graph>
+        </div>
       </div>
-    </th>      
+    </th>
   </tr>
 </table>
-
-
-
-
-
-

@@ -2,3 +2,11 @@
 .grad {
     background-image: url('bg.jpg');
 }
+
+.dataTable{
+    background: white;
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing:8px;
+}

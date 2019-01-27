@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Expense } from './expense/expense';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +6,9 @@ import { Expense } from './expense/expense';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'REFICE EXPENSES';
+  constructor(){ }
+
+  title = 'GASTOS DE RECIFE';
   
   monthExpenses = [];
   categoryExpenses = [];
