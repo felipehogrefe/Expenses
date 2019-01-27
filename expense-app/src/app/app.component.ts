@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   constructor(){ }
 
-  title = 'GASTOS DE RECIFE';
+  title = 'GASTOS DA PREFEITURA DE RECIFE';
   
   monthExpenses = [];
   categoryExpenses = [];

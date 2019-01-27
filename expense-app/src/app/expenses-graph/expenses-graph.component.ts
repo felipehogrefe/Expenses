@@ -11,8 +11,8 @@ import { Chart } from 'chart.js';
 })
 export class ExpensesGraphComponent implements OnInit {
 
-  chart : any;
-  total : number;
+  chart: any;
+  total: number;
 
   constructor(private mes: MonthExpenseService, private rc: RandomColor) { }
 
@@ -22,16 +22,18 @@ export class ExpensesGraphComponent implements OnInit {
 
 
         let monthLabels = monthExpenses.map(monthExpenses => monthExpenses.movimentation_month)
-        let monthValues = monthExpenses.map(monthExpenses => monthExpenses.total)   
-        
+        let monthValues = monthExpenses.map(monthExpenses => monthExpenses.total)
+
         let totalList = [];
         let total = 0
 
-        for(let item of monthValues){
+        for (let item of monthValues) {
           total += item
           totalList.push(total)
         }
-        
+
+        Chart.defaults.global.defaultFontColor='black';
+
         this.chart = new Chart('canvas', {
           type: 'line',
           data: {
@@ -40,16 +42,21 @@ export class ExpensesGraphComponent implements OnInit {
               {
                 label: 'Gasto Total (R$)',
                 data: totalList,
-                borderColor: '#3cba9f'
+                borderColor: '#3cba9f',
+
               }
             ]
           },
-          options: {           
+          options: {
             legend: {
               labels: {
                 fontColor: 'black'
               }
             }
+          },
+          scales: {
+            yAxes: [{fontColor: "black"}],
+            xAxes: [{fontColor: "black"}]
           }
         })
       });

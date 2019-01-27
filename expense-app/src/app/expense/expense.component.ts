@@ -14,10 +14,8 @@ export class ExpenseComponent implements OnInit {
   constructor(private expenseService : ExpenseService) { }
 
   ngOnInit() {
-    this.expenseService.getExpenses().subscribe(
+    this.expenseService.getExpenses(1).subscribe(
       expenses => this.expenses = expenses);
-
-      console.log(this.expenses.length)
   }
 
 }

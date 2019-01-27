@@ -39,5 +39,10 @@ public class ExpenseService {
 		return list;
 	}
 
+	public void removeExpense(Integer id) {
+		expenseRepository.deleteById(id);
+		
+	}
+
 
 }

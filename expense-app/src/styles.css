@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-.grad {
+.bg {
     background-image: url('bg.jpg');
 }
 
@@ -9,6 +9,13 @@
     width: 100%;
     border-collapse: separate; 
     border-spacing:8px;
+}
+.editTable{
+    border: 1px solid black;
+    width: 80%;
+    border-collapse: separate; 
+    border-spacing:8px;
+    position: relative;
 }
 
 .dataValue{
@@ -27,6 +34,19 @@
     display: inline-block;
     font-size: 16px;
     width: 200px;
+    cursor: pointer;
+    position: relative;
+  }
+  .opaqueButton {
+    color: white;
+    background-color: rgb(56, 111, 230, 0.1);
+    border: 2px solid white;
+    padding: 15px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 150px;
     cursor: pointer;
     position: relative;
   }
@@ -51,10 +71,15 @@
 
 .header{
     text-align: left;
-    font-size: 100px;
+    font-size: 80px;
     color: white;
     font: sans-serif;
-
+}
+.editHeader{
+    text-align: left;
+    font-size: 48px;
+    color: white;
+    font: sans-serif;
 }
 table.fixed { 
     table-layout:fixed; 

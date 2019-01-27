@@ -10,18 +10,199 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of expenses">
-        <td style="text-align: left; cursor: pointer;" class="id"><img src="https://cdn.onlinewebfonts.com/svg/img_167289.png" height="20" width="20" (click)="editExpense(item)" > </td>
+        <td style="text-align: left; cursor: pointer;" class="id"><img src="https://cdn.onlinewebfonts.com/svg/img_167289.png"
+            height="20" width="20" (click)="editExpense(item)"> </td>
         <td style="text-align: left" class="id">{{ item.id }}</td>
         <td style="text-align: left" class="value">{{ item.orgao_nome }}</td>
         <td style="text-align: left" class="value">R${{ item.valor_liquidado}}</td>
-      </tr>    
+      </tr>
     </tbody>
   </table>
-  <button type="button" class="buttonSmall" style="margin:5px;"><p>&#8592;</p></button>
-  <input type="text" style="height:32px" value={{from}}-{{from+pace-1}}  class="field left" readonly>
-  <button type="button" class="buttonSmall" style="margin:5px;"><p>&#8594;</p></button>
+  <button type="button" class="buttonSmall" style="margin:5px;" (click)="previousData()">
+    <p>&#8592;</p>
+  </button>
+  <input type="text" style="height:32px" value={{from}}-{{from+pace-1}} class="field left" readonly>
+  <button type="button" class="buttonSmall" style="margin:5px;" (click)="nextData()">
+    <p>&#8594;</p>
+  </button>
 </div>
 
-<div [hidden]="!edit">
-  show text
+<div *ngIf=edit>
+  <table class="editTable">
+    <tr style="width: 50%">
+      <td>
+        <div style="margin:4px;" class="editHeader">
+          Editar
+
+        </div>
+      </td>
+      <td>
+        <button type="button" class="opaqueButton" (click)=save()>Salvar</button>
+        <button type="button" class="opaqueButton" (click)=remove()>Remover</button>
+      </td>
+    </tr>
+
+    <tr style="text-align: left;">
+      <td style="width: 40%">ID:</td>
+      <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense._id}} class="field left" readonly></td>
+    </tr>
+    <tr style="text-align: left;">
+        <td style="width: 40%">Ano de movimentação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.ano_movimentacao}} class="field left" [(ngModel)]=selectedExpense.ano_movimentacao></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Mês de movimentação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.mes_movimentacao}} class="field left" [(ngModel)]=selectedExpense.mes_movimentacao></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do órgão:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.orgao_codigo}} class="field left" [(ngModel)]=selectedExpense.orgao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da unidade:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.unidade_codigo}} class="field left" [(ngModel)]=selectedExpense.unidade_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da categoria economica:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.categoria_economica_codigo}} class="field left" [(ngModel)]=selectedExpense.categoria_economica_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do grupo de despesa:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.grupo_despesa_codigo}} class="field left" [(ngModel)]=selectedExpense.grupo_despesa_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da modalidade de aplicação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.modalidade_aplicacao_codigo}} class="field left" [(ngModel)]=selectedExpense.modalidade_aplicacao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do elemento:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.elemento_codigo}} class="field left" [(ngModel)]=selectedExpense.elemento_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do sublemento:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.subelemento_codigo}} class="field left" [(ngModel)]=selectedExpense.subelemento_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da função:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.funcao_codigo}} class="field left" [(ngModel)]=selectedExpense.funcao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da subfunção:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.subfuncao_codigo}} class="field left" [(ngModel)]=selectedExpense.subfuncao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do programa:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.programa_codigo}} class="field left" [(ngModel)]=selectedExpense.programa_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da ação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.acao_codigo}} class="field left" [(ngModel)]=selectedExpense.acao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da fonte de recurso:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.fonte_recurso_codigo}} class="field left" [(ngModel)]=selectedExpense.fonte_recurso_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Ano de empenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.empenho_ano}} class="field left" [(ngModel)]=selectedExpense.empenho_ano></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da modalidade de empenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.empenho_modalidade_codigo}} class="field left" [(ngModel)]=selectedExpense.empenho_modalidade_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Número de empenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.empenho_numero}} class="field left" [(ngModel)]=selectedExpense.empenho_numero></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Subempenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.subempenho}} class="field left" [(ngModel)]=selectedExpense.subempenho></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. do credor:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.credor_codigo}} class="field left" [(ngModel)]=selectedExpense.credor_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Cód. da modalidade de licitação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.modalidade_licitacao_codigo}} class="field left" [(ngModel)]=selectedExpense.modalidade_licitacao_codigo></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do órgão:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.orgao_nome}} class="field left" [(ngModel)]=selectedExpense.orgao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da unidade:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.unidade_nome}} class="field left" [(ngModel)]=selectedExpense.unidade_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da categoria economica:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.categoria_economica_nome}} class="field left" [(ngModel)]=selectedExpense.categoria_economica_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do grupo de despesa:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.grupo_despesa_nome}} class="field left" [(ngModel)]=selectedExpense.grupo_despesa_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da modalidade de aplicação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.modalidade_aplicacao_nome}} class="field left" [(ngModel)]=selectedExpense.modalidade_aplicacao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do elemento:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.elemento_nome}} class="field left" [(ngModel)]=selectedExpense.elemento_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do subelemento:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.subelemento_nome}} class="field left" [(ngModel)]=selectedExpense.subelemento_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da função</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.funcao_nome}} class="field left" [(ngModel)]=selectedExpense.funcao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da subfunção:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.subfuncao_nome}} class="field left" [(ngModel)]=selectedExpense.subfuncao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do programa:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.programa_nome}} class="field left" [(ngModel)]=selectedExpense.programa_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da ação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.acao_nome}} class="field left" [(ngModel)]=selectedExpense.acao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da fonte de recurso:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.fonte_recurso_nome}} class="field left" [(ngModel)]=selectedExpense.fonte_recurso_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da modalidade de empenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.empenho_modalidade_nome}} class="field left" [(ngModel)]=selectedExpense.empenho_modalidade_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Indicador de subempenho:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.indicador_subempenho}} class="field left" [(ngModel)]=selectedExpense.indicador_subempenho></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome do credor:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.credor_nome}} class="field left" [(ngModel)]=selectedExpense.credor_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Nome da modalidade de liticação:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.modalidade_licitacao_nome}} class="field left" [(ngModel)]=selectedExpense.modalidade_licitacao_nome></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Valor empenhado:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.valor_empenhado}} class="field left" [(ngModel)]=selectedExpense.valor_empenhado></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Valor Liquidado:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.valor_liquidado}} class="field left" [(ngModel)]=selectedExpense.valor_liquidado></td>
+      </tr>
+      <tr style="text-align: left;">
+        <td style="width: 40%">Valor pago:</td>
+        <td><input type="text" style="height:32px; width: 195px" value={{selectedExpense.valor_pago}} class="field left" [(ngModel)]=selectedExpense.valor_pago></td>
+      </tr>
+      
+            
+  </table>
 </div>
