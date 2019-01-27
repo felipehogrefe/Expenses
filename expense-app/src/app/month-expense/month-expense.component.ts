@@ -10,12 +10,18 @@ import { MonthExpenseService } from './month-expense.service';
 export class MonthExpenseComponent implements OnInit{
 
   monthExpenses : MonthExpense[];
+  total : number = 0;
 
   constructor(private monthExpenseService : MonthExpenseService){}
 
   ngOnInit(){
     this.monthExpenseService.getMonthExpenses()
-      .subscribe(monthExpenses => this.monthExpenses = monthExpenses);
+      .subscribe(monthExpenses => {
+        this.monthExpenses = monthExpenses
+        for(let item of monthExpenses){
+          this.total += item.total
+        }
+      });
   }
 
 }

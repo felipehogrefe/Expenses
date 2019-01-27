@@ -28,6 +28,7 @@ export class SourceGraphComponent implements OnInit {
 
         let sourceLabels = sourceExpenses.map(sourceExpenses => sourceExpenses.source_name)
         let sourceValues = sourceExpenses.map(sourceExpenses => sourceExpenses.total)
+
         let colors = this.rc.getColorList(sourceLabels.length)
 
         this.chart = new Chart('canvas', {

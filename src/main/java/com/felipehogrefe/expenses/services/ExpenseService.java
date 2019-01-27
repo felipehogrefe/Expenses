@@ -1,5 +1,6 @@
 package com.felipehogrefe.expenses.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.felipehogrefe.expenses.repositories.ExpenseRepository;
 
 @Service
 public class ExpenseService {
+	private static final int listSize = 10;
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	
@@ -26,4 +28,16 @@ public class ExpenseService {
 		if(expenseRepository.save(e)!=null) return true;
 		return false;
 	}
+
+	public List<Expense> getExpenseList(int from) {
+		ArrayList<Expense> list = new ArrayList<Expense>();
+		for(int i = from;i<from+listSize;i++) {
+
+			Optional<Expense> e = expenseRepository.findById(i);
+			if(e.isPresent()) list.add(e.get());
+		}
+		return list;
+	}
+
+
 }

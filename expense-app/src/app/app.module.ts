@@ -19,6 +19,8 @@ import { ExpenseComponent } from './expense/expense.component';
 import { MonthGraphComponent } from './month-graph/month-graph.component';
 import { SourceGraphComponent } from './source-graph/source-graph.component';
 import { CategoryGraphComponent } from './category-graph/category-graph.component';
+import { ExpensesDataComponent } from './expenses-data/expenses-data.component';
+import { ExpensesGraphComponent } from './expenses-graph/expenses-graph.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { CategoryGraphComponent } from './category-graph/category-graph.componen
     ExpenseComponent,
     MonthGraphComponent,
     SourceGraphComponent,
-    CategoryGraphComponent
+    CategoryGraphComponent,
+    ExpensesDataComponent,
+    ExpensesGraphComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,7 @@ import { CategoryGraphComponent } from './category-graph/category-graph.componen
     FormsModule,
     HttpModule,
     ChartsModule,
-    CommonModule
+    CommonModule,    
   ],
   providers: [{provide: LOCALE_ID, useValue: 'pt-BR'}],
   bootstrap: [AppComponent]

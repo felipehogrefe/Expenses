@@ -10,3 +10,54 @@
     border-collapse: separate; 
     border-spacing:8px;
 }
+
+.dataValue{
+    width: 30%;
+}
+.dataDesc{
+    width: 70%;
+}
+.button {
+    color: white;
+    background-color: rgb(56, 111, 230, 0.1);
+    border: 2px solid white;
+    padding: 15px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 200px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .buttonSmall {
+    color: white;
+    background-color: rgb(56, 111, 230, 0.1);
+    border: 1px solid white;
+    padding: 2px 2px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    width: 40px;
+    cursor: pointer;
+    position: relative;
+  }
+
+.topAlign{    
+    vertical-align: top;
+}
+
+.header{
+    text-align: left;
+    font-size: 100px;
+    color: white;
+    font: sans-serif;
+
+}
+table.fixed { 
+    table-layout:fixed; 
+    width:100%;
+    height:100%;
+}

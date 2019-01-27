@@ -13,19 +13,21 @@ import { RandomColor } from '../RandomColors';
   providedIn: 'root'
 })
 export class CategoryGraphComponent implements OnInit {
-  categoryExpenses: CategoryExpense[]
+
+  categoryExpenses : CategoryExpense[]
   public pieChartType:string = 'pie';
 
   chart : any;
 
   constructor(private ces: CategoryExpenseService, private rc : RandomColor) { }
 
+  getCategoryExpenses():CategoryExpense[]{
+    return this.categoryExpenses
+  }
+
   ngOnInit() {
     this.ces.getCategoryExpenses()
       .subscribe(categoryExpenses => {
-
-
-
 
         this.categoryExpenses = categoryExpenses;
 

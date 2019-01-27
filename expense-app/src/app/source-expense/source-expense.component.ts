@@ -10,12 +10,18 @@ import { SourceExpenseService } from './source-expense.service';
 export class SourceExpenseComponent{
 
   sourceExpenses : SourceExpense[];
+  total : number = 0;
 
   constructor(private sourceExpenseService : SourceExpenseService){}
 
   ngOnInit(){
     this.sourceExpenseService.getSourceExpenses()
-      .subscribe(sourceExpenses => this.sourceExpenses = sourceExpenses);
+      .subscribe(sourceExpenses => {
+        this.sourceExpenses = sourceExpenses
+        for(let item of sourceExpenses){
+          this.total += item.total
+        }
+      });
   }
 
 }

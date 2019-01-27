@@ -24,6 +24,12 @@ public class ExpenseResource {
 	private ExpenseService expenseService;
 	
 	@CrossOrigin
+	@GetMapping(value="/offset/{from}")
+	public List<Expense> findAll(@PathVariable int from) {	
+		return expenseService.getExpenseList(from);
+	}
+	
+	@CrossOrigin
 	@GetMapping(value="/{id}")
 	public Optional<Expense> find(@PathVariable Integer id) {	
 		return expenseService.find(id);

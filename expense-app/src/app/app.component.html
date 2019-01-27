@@ -2,9 +2,6 @@
   {{ title }}
 </div>
 
-
-
-
 <table class="fixed">
   <tr>
     <th class="topAlign">
@@ -12,10 +9,10 @@
         <button type="button" class="button" (click)="showMonth()" style="margin:5px;">Gastos por mês</button>
         <button type="button" class="button" (click)="showCategory()" style="margin:5px;">Gastos por categoria</button>
         <button type="button" class="button" (click)="showSource()" style="margin:5px;">Gastos por fonte</button>
-        <button type="button" class="button" style="margin:5px;">Todos os dados</button>
+        <button type="button" class="button" (click)="showAllData()" style="margin:5px;">Todos os dados</button>
       </div>
 
-      <div style="margin-top: 5%; margin-left: 10%">
+      <div style="margin-top: 5%; margin-left: 6%; margin-right: 6%">
         <div *ngIf="category">
           <app-category-expense></app-category-expense>
         </div>
@@ -27,7 +24,11 @@
         <div *ngIf="source">
           <app-source-expense></app-source-expense>
         </div>
+        <div *ngIf="all">
+          <app-expenses-data></app-expenses-data>
+        </div>
       </div>
+
 
     </th>
     <th class="topAlign">
@@ -43,7 +44,12 @@
         <div *ngIf="source">
           <app-source-graph></app-source-graph>
         </div>
+        <div *ngIf="all">
+          <app-expenses-graph></app-expenses-graph>
+        </div>
+
       </div>
     </th>
   </tr>
 </table>
+

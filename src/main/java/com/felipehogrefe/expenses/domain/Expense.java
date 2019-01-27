@@ -24,26 +24,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	programa_nome, acao_nome, fonte_recurso_nome, empenho_modalidade_nome, indicador_subempenho, 
 	credor_nome, modalidade_licitacao_nome, valor_empenhado, valor_liquidado, valor_pago;
 
-	
 	public Expense() {}
-	
-	public Expense(int _id, int id, String orgaoNome, int anoMovimentacao, int mesMovimentacao, int categoriaEconomicaCodigo,
-			int fonteRecursoCodigo, String categoriaEconomicaNome, String fonteRecursoNome, String valorEmpenhado,
-			String valorLiquidado, String valorPago) {
-		super();
-		this.id = _id;
-		this._id = id;
-		this.orgao_nome = orgaoNome;
-		this.ano_movimentacao = anoMovimentacao;
-		this.mes_movimentacao = mesMovimentacao;
-		this.categoria_economica_codigo = categoriaEconomicaCodigo;
-		this.fonte_recurso_codigo = fonteRecursoCodigo;
-		this.categoria_economica_nome = categoriaEconomicaNome;
-		this.fonte_recurso_nome = fonteRecursoNome;
-		this.valor_empenhado = valorEmpenhado;
-		this.valor_liquidado = valorLiquidado;
-		this.valor_pago = valorPago;
-	}
 		
 	@Override
 	public String toString() {

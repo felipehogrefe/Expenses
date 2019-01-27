@@ -10,12 +10,21 @@ import { CategoryExpenseService } from './category-expense.service';
 export class CategoryExpenseComponent implements OnInit{
 
   categoryExpenses : CategoryExpense[];
+  total : number = 0;
 
   constructor(private categoryExpenseService : CategoryExpenseService){}
 
   ngOnInit(){
     this.categoryExpenseService.getCategoryExpenses()
-      .subscribe(categoryExpenses => this.categoryExpenses = categoryExpenses);
+      .subscribe(categoryExpenses => {
+        this.categoryExpenses = categoryExpenses
+
+        for(let item of categoryExpenses){
+          this.total += item.total
+        }
+      });
+
+      
   }
 
 }

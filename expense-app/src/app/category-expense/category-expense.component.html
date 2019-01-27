@@ -1,15 +1,19 @@
-<div class="div">
+<div>
     <table class="dataTable">      
         <thead>
         <tr >
-            <th style="text-align: left">Categoria</th>
-            <th style="text-align: left">Valor</th>
+            <th style="text-align: left" class = "dataDesc">Categoria</th>
+            <th style="text-align: left" class = "dataValue">Valor</th>
         </tr>
         </thead>
         <tbody >
         <tr *ngFor="let item of categoryExpenses">
             <td style="text-align: left">{{ item.category_name }}</td>
             <td style="text-align: left">{{ item.total | currency:'BRL' }}</td>
+        </tr>
+        <tr >
+            <th style="text-align: left" class = "dataDesc">Total</th>
+            <th style="text-align: left" class = "dataValue">{{total | currency:'BRL'}}</th>
         </tr>
         </tbody>
     </table>

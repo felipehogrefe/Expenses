@@ -17,24 +17,33 @@ export class AppComponent {
   source = false
   category = false
   month = false
+  all = false;
 
   showCategory():void{
     this.source = false
     this.category = true
     this.month = false
+    this.all = false
   }
 
   showSource():void{
     this.source = true
     this.category = false
     this.month = false
+    this.all = false
   }
 
   showMonth():void{
     this.source = false
     this.category = false
     this.month = true
+    this.all = false
   }
 
-
+  showAllData():void{
+    this.source = false
+    this.category = false
+    this.month = false
+    this.all = true
+  }
 }
