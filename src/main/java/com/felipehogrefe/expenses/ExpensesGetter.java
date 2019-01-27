@@ -16,7 +16,7 @@ import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
 
 public class ExpensesGetter {
 
-	private static final String[] monthsNames = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+	public static final String[] monthsNames = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
 
 	private ExpenseRepository expenseRepository;

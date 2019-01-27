@@ -10,19 +10,28 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.services.ExpenseService;
+import com.felipehogrefe.expenses.services.MonthExpenseService;
+import com.felipehogrefe.expenses.services.SourceExpenseService;
+import com.felipehogrefe.expenses.services.CategoryExpenseService;
 
 @RestController
 @RequestMapping(value="/expenses")
 public class ExpenseResource {
 	@Autowired
 	private ExpenseService expenseService;
+	@Autowired
+	private MonthExpenseService monthExpenseService;
+	@Autowired
+	private CategoryExpenseService categoryExpenseService;
+	@Autowired
+	private SourceExpenseService sourceExpenseService;
 	
 	@CrossOrigin
 	@GetMapping(value="/offset/{from}")
@@ -31,10 +40,22 @@ public class ExpenseResource {
 	}
 	
 	@CrossOrigin
-	@DeleteMapping(value="/delete/{id}")
-	public ResponseEntity<?> newPlayer(@RequestBody Integer id){
-		expenseService.removeExpense(id);
+	@DeleteMapping(path="/delete/{id}")
+	public ResponseEntity<?> removeExpense(@PathVariable Integer id){
+		Optional<Expense> oe = expenseService.find(id);
+		if(oe.isPresent()) {
+			Expense e = oe.get();
+			refactorDB(e);
+			expenseService.removeExpense(id);
+			
+		}
 		return ResponseEntity.ok(HttpStatus.OK);
+	}
+
+	private void refactorDB(Expense e) {
+		monthExpenseService.remove(e);
+		categoryExpenseService.remove(e);
+		sourceExpenseService.remove(e);
 	}
 	
 	@CrossOrigin
@@ -66,8 +87,9 @@ public class ExpenseResource {
 		return ResponseEntity.ok(expenseService.getExpenseList());
 	}
 	
-	@PostMapping(value="/edit")
-	public ResponseEntity<?> edit(@RequestBody Expense e){
+	@CrossOrigin
+	@PutMapping(value="/edit")
+	public ResponseEntity<?> editExpense(@RequestBody Expense e){
 		Optional<Expense> expense = expenseService.find(e.getId());
 		if(expense.isPresent()){
 			expenseService.editExpense(e);

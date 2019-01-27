@@ -9,9 +9,9 @@ import { ExpenseService } from '../expense/expense.service';
 })
 export class ExpensesDataComponent {
 
-  expenses: Expense[];
-  from: number = 1
-  pace: number = 10
+  expenses: Expense[] = [];
+  chunk: number = 0
+  
 
   edit = false;
   deleted = false;
@@ -30,68 +30,67 @@ export class ExpensesDataComponent {
     this.selectedExpense = expense;
   }
 
+  reloadData(): void {
+    this.expenseService.getExpenses(this.chunk).subscribe(
+      expenses => this.expenses = expenses);
+  }
+
   previousData(): void {
-    if (this.from > this.pace) {
-      this.from -= this.pace;
-      this.expenseService.getExpenses(this.from).subscribe(
-        expenses => this.expenses = expenses);
-        if(this.expenses.length==0){
-          this.from += this.pace
-        }
+    if(this.chunk>0){
+      this.chunk--
+      
+      this.reloadData(); 
+      if (this.expenses.length == 0) {
+        this.chunk++
+      }
       this.selectedExpense = null
       this.edit = false
+      
     }
   }
 
-  reloadData():void{
-    this.expenseService.getExpenses(this.from).subscribe(
-      expenses => this.expenses = expenses);
-  }
-
-  nextData(): void {
-    this.from += this.pace
-    this.expenseService.getExpenses(this.from).subscribe(
-      expenses => this.expenses = expenses);
-      if(this.expenses.length==0){
-        this.from -= this.pace
-      }
+  nextData(): void {    
+    this.chunk++
+    this.reloadData();
+    if (this.expenses.length == 0) { 
+      this.chunk--
+    }
     this.selectedExpense = null
     this.edit = false
   }
 
   save(): void {
-    console.log(this.selectedExpense.ano_movimentacao)
     this.expenseService.editExpense(this.selectedExpense).subscribe(response => {
       if (response === "OK") {
         this.edit = false;
         this.selectedExpense = null
-        this.edited = true        
-      }else {
+        this.edited = true
+        this.reloadData();
+      } else {
         //show error component
       }
-    }, error => {        
-      
-    })
+    }, error => {
 
-    console.log(this.selectedExpense.ano_movimentacao)
+    })
     this.selectedExpense = null
     this.edit = false
   }
+
   remove(): void {
-    this.expenseService.deletExpense(this.selectedExpense).subscribe(response => {
+    this.expenseService.deleteExpense(this.selectedExpense).subscribe(response => {
       console.log(response);
       if (response === "OK") {
         this.deleted = true;
         this.selectedExpense = null
         this.edit = false
         this.reloadData();
-      }else {
+      } else {
         //show error component
       }
-    }, error => {        
-      
+    }, error => {
+
     })
-    
+
   }
 
 }

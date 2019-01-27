@@ -21,10 +21,20 @@
   <button type="button" class="buttonSmall" style="margin:5px;" (click)="previousData()">
     <p>&#8592;</p>
   </button>
-  <input type="text" style="height:32px" value={{from}}-{{from+pace-1}} class="field left" readonly>
+  <input type="text" style="height:32px" value={{chunk*10+1}}-{{chunk*10+10}} class="field left" readonly>
   <button type="button" class="buttonSmall" style="margin:5px;" (click)="nextData()">
     <p>&#8594;</p>
   </button>
+</div>
+
+<div *ngIf=edited&&edit>
+  Editado
+
+</div>
+
+<div *ngIf=deleted&&edit>
+  Deletado
+
 </div>
 
 <div *ngIf=edit>

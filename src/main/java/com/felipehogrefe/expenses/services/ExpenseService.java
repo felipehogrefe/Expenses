@@ -29,12 +29,13 @@ public class ExpenseService {
 		return false;
 	}
 
-	public List<Expense> getExpenseList(int from) {
+	public List<Expense> getExpenseList(int chunk) {
 		ArrayList<Expense> list = new ArrayList<Expense>();
-		for(int i = from;i<from+listSize;i++) {
-
-			Optional<Expense> e = expenseRepository.findById(i);
-			if(e.isPresent()) list.add(e.get());
+		List<Expense> expenseList = expenseRepository.findAll();
+		int index = chunk*listSize;
+		while(list.size()<listSize) {
+			Expense e = expenseList.get(index++);
+			list.add(e);
 		}
 		return list;
 	}
