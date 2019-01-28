@@ -2,7 +2,6 @@ package com.felipehogrefe.expenses.resources;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,16 +45,9 @@ public class ExpenseResource {
 		if(oe.isPresent()) {
 			Expense e = oe.get();
 			refactorDB(e);
-			expenseService.removeExpense(id);
-			
+			expenseService.removeExpense(id);		
 		}
 		return ResponseEntity.ok(HttpStatus.OK);
-	}
-
-	private void refactorDB(Expense e) {
-		monthExpenseService.remove(e);
-		categoryExpenseService.remove(e);
-		sourceExpenseService.remove(e);
 	}
 	
 	@CrossOrigin
@@ -82,6 +74,18 @@ public class ExpenseResource {
 	}
 	
 	@CrossOrigin
+	@GetMapping(value="/{att}/{code}")
+	public ResponseEntity<List<Expense>> getByCodigoOrgao(@PathVariable String att, @PathVariable Integer code) {	
+		return ResponseEntity.ok(expenseService.getExpenseListByCode(code, att));		
+	}
+	
+	@CrossOrigin
+	@GetMapping(value="/atributos")
+	public ResponseEntity<String> getAtributesNames() {	
+		return ResponseEntity.ok(expenseService.getAtributesNames());		
+	}
+	
+	@CrossOrigin
 	@GetMapping(value="/source")
 	public ResponseEntity<List<Expense>> getBySource(){
 		return ResponseEntity.ok(expenseService.getExpenseList());
@@ -93,10 +97,16 @@ public class ExpenseResource {
 		Optional<Expense> expense = expenseService.find(e.getId());
 		if(expense.isPresent()){
 			expenseService.editExpense(e);
+			refactorDB(e);
 			return ResponseEntity.ok(HttpStatus.OK);	
 		}else {
 			return ResponseEntity.notFound().build();
 		}
 	}
 	
+	private void refactorDB(Expense e) {
+		monthExpenseService.remove(e);
+		categoryExpenseService.remove(e);
+		sourceExpenseService.remove(e);
+	}
 }

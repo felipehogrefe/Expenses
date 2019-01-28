@@ -14,12 +14,12 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	private int _id, ano_movimentacao, mes_movimentacao, orgao_codigo, unidade_codigo, 
+	public int _id, ano_movimentacao, mes_movimentacao, orgao_codigo, unidade_codigo, 
 	categoria_economica_codigo, grupo_despesa_codigo, modalidade_aplicacao_codigo,
 	elemento_codigo, subelemento_codigo, funcao_codigo, subfuncao_codigo, programa_codigo,
 	acao_codigo, fonte_recurso_codigo, empenho_ano, empenho_modalidade_codigo, empenho_numero,
 	subempenho, credor_codigo, modalidade_licitacao_codigo;
-	private String orgao_nome, unidade_nome, categoria_economica_nome, grupo_despesa_nome, 
+	public String orgao_nome, unidade_nome, categoria_economica_nome, grupo_despesa_nome, 
 	modalidade_aplicacao_nome, elemento_nome, subelemento_nome, funcao_nome, subfuncao_nome, 
 	programa_nome, acao_nome, fonte_recurso_nome, empenho_modalidade_nome, indicador_subempenho, 
 	credor_nome, modalidade_licitacao_nome, valor_empenhado, valor_liquidado, valor_pago;
@@ -45,8 +45,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	}
 
 	@Override
-	public int compareTo(Expense p) {
-		
+	public int compareTo(Expense p) {		
 		return 0;
 	}
 

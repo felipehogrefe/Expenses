@@ -1,6 +1,7 @@
 package com.felipehogrefe.expenses;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONException;
@@ -18,6 +19,8 @@ public class ExpensesGetter {
 
 	public static final String[] monthsNames = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
 			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+	
+	
 
 	private ExpenseRepository expenseRepository;
 	private CategoryExpenseRepository categoryExpenseRepository;
@@ -27,6 +30,10 @@ public class ExpensesGetter {
 
 	public ExpensesGetter(ExpenseRepository _expenseRepository) {
 		expenseRepository = _expenseRepository;
+	}
+	
+	public ExpensesGetter(int _limit) {
+		limit = _limit;
 	}
 
 	public ExpensesGetter(int _limit, ExpenseRepository _expenseRepository,
@@ -50,14 +57,7 @@ public class ExpensesGetter {
 
 				expenseRepository.saveAll(utep.getExpenses());
 
-				for (Expense e : utep.getExpenses()) {
-
-					double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
-
-					editCategory(e, expenseValue);
-					editMonth(e, expenseValue);
-					editSource(e, expenseValue);
-				}
+				defineTotals(utep.getExpenses());
 			}
 
 		} catch (JSONException | IOException e) {
@@ -67,7 +67,20 @@ public class ExpensesGetter {
 
 	}
 
-	private void editCategory(Expense e, double expenseValue) {
+	public void defineTotals(List<Expense> list){
+		for (Expense e : list) {
+
+			double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
+
+			editCategory(e, expenseValue);
+			editMonth(e, expenseValue);
+			editSource(e, expenseValue);
+		}
+	}
+
+	void editCategory(Expense e, double expenseValue) {
+		System.out.println("========");
+		System.out.println(e._id + " - "+expenseValue);
 		Optional<CategoryExpense> oce = categoryExpenseRepository.findById(e.getCategoria_economica_codigo());
 		CategoryExpense ce;
 		if (oce.isPresent()) {
@@ -80,7 +93,7 @@ public class ExpensesGetter {
 		categoryExpenseRepository.save(ce);
 	}
 
-	private void editMonth(Expense e, double expenseValue) {
+	void editMonth(Expense e, double expenseValue) {
 		Optional<MonthExpense> ome = monthExpenseRepository.findById(e.getMes_movimentacao());
 		MonthExpense me;
 		if (ome.isPresent()) {
@@ -92,7 +105,7 @@ public class ExpensesGetter {
 		monthExpenseRepository.save(me);
 	}
 
-	private void editSource(Expense e, double expenseValue) {
+	void editSource(Expense e, double expenseValue) {
 		Optional<SourceExpense> ose = sourceExpenseRepository.findById(e.getFonte_recurso_codigo());
 		SourceExpense se;
 		if (ose.isPresent()) {

@@ -15,7 +15,7 @@ import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
 @SpringBootApplication
 public class ExpensesApplication implements CommandLineRunner {
 	private static final int querySize = 100, limit = 200;
-	private static boolean isTest = false;
+	public static boolean isTest = false;
 	// 94178
 	
 	@Autowired
