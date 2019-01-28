@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
@@ -26,7 +25,7 @@ public class ExpenseService {
 	private CategoryExpenseService categoryExpenseService;
 	@Autowired
 	private SourceExpenseService sourceExpenseService;
-	
+
 	public Optional<Expense> find(Integer id) {
 		Optional<Expense> obj = expenseRepository.findById(id);
 		return obj;
@@ -48,7 +47,7 @@ public class ExpenseService {
 		List<Expense> list = new ArrayList<Expense>();
 		List<Expense> expenseList = expenseRepository.findAll();
 		int index = chunk * chunkSize;
-		while (list.size() < chunkSize && list.size()<(expenseList.size())) {
+		while (list.size() < chunkSize && list.size() < (expenseList.size())) {
 			Expense e = expenseList.get(index++);
 			list.add(e);
 		}
@@ -65,18 +64,17 @@ public class ExpenseService {
 	public List<Expense> getExpenseListByCode(String fieldName, Integer code) {
 		List<Expense> list = new ArrayList<Expense>();
 		try {
-			Expense e = new Expense();
-			Expense.class.getField(fieldName).set(e, code);
-		
-			Example<Expense> example = Example.of(e);
-			List<Expense> completeList = expenseRepository.findAll(example);
-			System.out.println("-------------------");
-			System.out.println(completeList.size());
-			System.out.println("-------------------");
-			for (Expense e1 : completeList) {
-					list.add(e1);
+			if (fieldName.equals("fonte_recurso_codigo")) {
+				list = expenseRepository.findBySourceCode(code);
+			} else {
+				List<Expense> completeList = expenseRepository.findAll();
+				for (Expense e : completeList) {
+					if ((int) Expense.class.getField(fieldName).get(e) == code)
+						list.add(e);
+				}
 			}
 		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;
@@ -86,12 +84,12 @@ public class ExpenseService {
 		String json = new Gson().toJson(getAtributesNamesList());
 		return json;
 	}
-	
+
 	public List<String> getAtributesNamesList() {
 		Field[] fields = Expense.class.getFields();
 		List<String> list = new ArrayList<>();
-		for(Field f : fields) {
-			if(f.getName().contains("codigo")) {
+		for (Field f : fields) {
+			if (f.getName().contains("codigo")) {
 				list.add(f.getName());
 			}
 		}
@@ -99,14 +97,13 @@ public class ExpenseService {
 		return list;
 	}
 
-	
 	private void removeFromDB(Expense e) {
 		monthExpenseService.remove(e);
 		categoryExpenseService.remove(e);
 		sourceExpenseService.remove(e);
 	}
-	
-	public void defineTotals(List<Expense> list){
+
+	public void defineTotals(List<Expense> list) {
 		for (Expense e : list) {
 
 			double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
@@ -122,10 +119,10 @@ public class ExpenseService {
 		Set<Integer> hash = new HashSet<Integer>();
 
 		List<Expense> completeList = expenseRepository.findAll();
-		for(Expense e : completeList) {
+		for (Expense e : completeList) {
 			hash.add(e.getFonte_recurso_codigo());
 		}
 		list.addAll(hash);
 		return list;
-	}	
+	}
 }

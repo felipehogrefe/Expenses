@@ -15,6 +15,8 @@ export class SourceExpenseComponent{
   expenses : Expense[];
   availableCode : number[]
   total : number = 0;
+  available = false
+  selectedCode : number
 
   showByCode = false;
 
@@ -32,11 +34,12 @@ export class SourceExpenseComponent{
       this.expenseService.getSourcesAvailableCodes()
       .subscribe(availableCode => {
         this.availableCode = availableCode
+        this.available = true
       });
   }
 
   showDataByCode(code:number):void{
-    this.expenseService.getExpenseByCode("fonte_recurso_codigo",code)
+    this.expenseService.getExpenseByCode("fonte_recurso_codigo",this.selectedCode)
       .subscribe(expenses => {
         this.expenses = expenses       
       });
