@@ -33,6 +33,19 @@ public class SourceExpenseService {
 			}
 		}
 	}
+
+	public void editSource(Expense e, double expenseValue) {
+		Optional<SourceExpense> ose = sourceExpenseRepository.findById(e.getFonte_recurso_codigo());
+		SourceExpense se;
+		if (ose.isPresent()) {
+			se = ose.get();
+			se.setTotal(expenseValue + se.getTotal());
+		} else {
+			se = new SourceExpense(e.getFonte_recurso_codigo(), e.getFonte_recurso_codigo(), e.getFonte_recurso_nome(),
+					expenseValue);
+		}
+		sourceExpenseRepository.save(se);
+	}
 	
 	
 }

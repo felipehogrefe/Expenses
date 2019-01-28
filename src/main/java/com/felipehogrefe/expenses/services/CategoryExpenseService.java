@@ -33,4 +33,17 @@ public class CategoryExpenseService {
 			}
 		}
 	}
+	
+	public void editCategory(Expense e, double expenseValue) {
+		Optional<CategoryExpense> oce = categoryExpenseRepository.findById(e.getCategoria_economica_codigo());
+		CategoryExpense ce;
+		if (oce.isPresent()) {
+			ce = oce.get();
+			ce.setTotal(expenseValue + ce.getTotal());
+		} else {
+			ce = new CategoryExpense(e.getCategoria_economica_codigo(), e.getCategoria_economica_codigo(),
+					e.getCategoria_economica_nome(), expenseValue);
+		}
+		categoryExpenseRepository.save(ce);
+	}
 }

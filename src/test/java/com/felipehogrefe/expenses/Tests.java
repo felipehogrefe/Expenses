@@ -1,29 +1,28 @@
 package com.felipehogrefe.expenses;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.felipehogrefe.expenses.domain.CategoryExpense;
 import com.felipehogrefe.expenses.domain.Expense;
+import com.felipehogrefe.expenses.domain.MonthExpense;
+import com.felipehogrefe.expenses.domain.SourceExpense;
 import com.felipehogrefe.expenses.repositories.CategoryExpenseRepository;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
 import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
 import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
+import com.felipehogrefe.expenses.services.ExpenseService;
 
 import junit.framework.TestCase;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Tests extends TestCase{
+public class Tests extends TestCase {
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	@Autowired
@@ -32,17 +31,27 @@ public class Tests extends TestCase{
 	private SourceExpenseRepository sourceExpenseRepository;
 	@Autowired
 	private MonthExpenseRepository monthExpenseRepository;
-	
+	@Autowired
+	private ExpenseService expenseService;
+
 	Expense e1, e2, e3;
+	List<Expense> localExpenses;
 	static boolean setUpIsDone = false;
 
 	@Test
-	public void download200Records() {
-//		ExpensesGetter eg = new ExpensesGetter(100, expenseRepository, categoryExpenseRepository,
-//				sourceExpenseRepository, monthExpenseRepository);
-//		eg.getExpenses(200);		
-//		List<Expense> expenses = expenseRepository.findAll();		
-//		assertTrue(expenses.size()==200);
+	public void getExpenseListUsingChunks() {
+		List<Expense> list = expenseService.getExpenseListChunk(0);
+		assertTrue(list.size() == localExpenses.size());
+
+	}
+
+	@Test
+	public void checkGetExpenseByAtributeCode() {
+		List<String> atributesList = expenseService.getAtributesNamesList();
+		for (String s : atributesList) {
+			List<Expense> list = expenseService.getExpenseListByCode(s, 1);
+			assertTrue(list.size() == 1);
+		}
 	}
 
 	@Test
@@ -51,17 +60,53 @@ public class Tests extends TestCase{
 		assertTrue(categoryExpenseRepository.findById(2).get().getTotal() == 2.0);
 		assertTrue(categoryExpenseRepository.findById(3).get().getTotal() == 3.0);
 	}
-	
+
 	@Test
 	public void checkCategoryElementsPresent() {
-		assertTrue(categoryExpenseRepository.findById(1).isPresent());
-		assertTrue(categoryExpenseRepository.findById(2).isPresent());
-		assertTrue(categoryExpenseRepository.findById(3).isPresent());
+		assertTrue(categoryExpenseRepository.findAll().size() == 3);
 	}
 
 	@Test
-	public void checkSourceTotalValue() {
+	public void checkAtributesNames() {
+		assertTrue(expenseService.getAtributesNames().split(",").length == 15);
+	}
 
+	@Test
+	public void removeExpense() {
+		Expense e = expenseRepository.findAll().get(0);
+		expenseService.removeExpense(e);
+		assertFalse(expenseRepository.findById(e.getId()).isPresent());
+		expenseService.editExpense(e);
+	}
+
+	@Test
+	public void removeExpenseAndCheckTotals() {
+		List<Expense> list = expenseRepository.findAll();
+		for (Expense e : list) {
+			expenseService.removeExpense(e);
+		}
+
+		double total = 0;
+		for (CategoryExpense ce : categoryExpenseRepository.findAll()) {
+			total += ce.getTotal();
+		}
+		assertTrue(total == 0);
+
+		total = 0;
+		for (MonthExpense me : monthExpenseRepository.findAll()) {
+			total += me.getTotal();
+		}
+		assertTrue(total == 0);
+
+		total = 0;
+		for (SourceExpense se : sourceExpenseRepository.findAll()) {
+			total += se.getTotal();
+		}
+		assertTrue(total == 0);
+
+		for (Expense e : list) {
+			expenseService.editExpense(e);
+		}
 	}
 
 	@Before
@@ -72,7 +117,7 @@ public class Tests extends TestCase{
 		init();
 		setUpIsDone = true;
 	}
-	
+
 	private void init() {
 		e1 = new Expense();
 		e1.set_id(1);
@@ -211,11 +256,10 @@ public class Tests extends TestCase{
 		list.add(e2);
 		list.add(e3);
 
+		localExpenses = list;
+
 		expenseRepository.saveAll(list);
 
-		ExpensesGetter eg = new ExpensesGetter(3, expenseRepository, categoryExpenseRepository, sourceExpenseRepository,
-				monthExpenseRepository);
-
-		eg.defineTotals(list);
+		expenseService.defineTotals(list);
 	}
 }

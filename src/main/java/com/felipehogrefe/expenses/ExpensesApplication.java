@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.felipehogrefe.expenses.repositories.CategoryExpenseRepository;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
-import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
-import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
+import com.felipehogrefe.expenses.services.ExpenseService;
 
 @SpringBootApplication
 public class ExpensesApplication implements CommandLineRunner {
@@ -21,11 +18,7 @@ public class ExpensesApplication implements CommandLineRunner {
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	@Autowired
-	private CategoryExpenseRepository categoryExpenseRepository;
-	@Autowired
-	private SourceExpenseRepository sourceExpenseRepository;
-	@Autowired
-	private MonthExpenseRepository monthExpenseRepository;
+	private ExpenseService expenseService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExpensesApplication.class, args);
@@ -35,8 +28,7 @@ public class ExpensesApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		if(!isTest) {
 		EventQueue.invokeLater(() -> {
-			ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, categoryExpenseRepository,
-					sourceExpenseRepository, monthExpenseRepository);
+			ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, expenseService);
 			eg.getExpenses(limit);
 		});
 		}

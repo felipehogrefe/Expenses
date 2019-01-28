@@ -16,26 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.services.ExpenseService;
-import com.felipehogrefe.expenses.services.MonthExpenseService;
-import com.felipehogrefe.expenses.services.SourceExpenseService;
-import com.felipehogrefe.expenses.services.CategoryExpenseService;
 
 @RestController
 @RequestMapping(value="/expenses")
 public class ExpenseResource {
 	@Autowired
 	private ExpenseService expenseService;
-	@Autowired
-	private MonthExpenseService monthExpenseService;
-	@Autowired
-	private CategoryExpenseService categoryExpenseService;
-	@Autowired
-	private SourceExpenseService sourceExpenseService;
 	
 	@CrossOrigin
 	@GetMapping(value="/offset/{from}")
 	public ResponseEntity<List<Expense>> findAll(@PathVariable int from) {	
-		return ResponseEntity.ok(expenseService.getExpenseList(from));
+		return ResponseEntity.ok(expenseService.getExpenseListChunk(from));
 	}
 	
 	@CrossOrigin
@@ -44,8 +35,7 @@ public class ExpenseResource {
 		Optional<Expense> oe = expenseService.find(id);
 		if(oe.isPresent()) {
 			Expense e = oe.get();
-			refactorDB(e);
-			expenseService.removeExpense(id);		
+			expenseService.removeExpense(e);		
 		}
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
@@ -76,11 +66,11 @@ public class ExpenseResource {
 	@CrossOrigin
 	@GetMapping(value="/{att}/{code}")
 	public ResponseEntity<List<Expense>> getByCodigoOrgao(@PathVariable String att, @PathVariable Integer code) {	
-		return ResponseEntity.ok(expenseService.getExpenseListByCode(code, att));		
+		return ResponseEntity.ok(expenseService.getExpenseListByCode(att, code));		
 	}
 	
 	@CrossOrigin
-	@GetMapping(value="/atributos")
+	@GetMapping(value="/atributes")
 	public ResponseEntity<String> getAtributesNames() {	
 		return ResponseEntity.ok(expenseService.getAtributesNames());		
 	}
@@ -97,16 +87,11 @@ public class ExpenseResource {
 		Optional<Expense> expense = expenseService.find(e.getId());
 		if(expense.isPresent()){
 			expenseService.editExpense(e);
-			refactorDB(e);
 			return ResponseEntity.ok(HttpStatus.OK);	
 		}else {
 			return ResponseEntity.notFound().build();
 		}
 	}
 	
-	private void refactorDB(Expense e) {
-		monthExpenseService.remove(e);
-		categoryExpenseService.remove(e);
-		sourceExpenseService.remove(e);
-	}
+	
 }

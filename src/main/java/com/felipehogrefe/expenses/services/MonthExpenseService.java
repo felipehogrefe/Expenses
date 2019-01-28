@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.felipehogrefe.expenses.ExpensesGetter;
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.domain.MonthExpense;
 import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
@@ -13,6 +12,9 @@ import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
 public class MonthExpenseService {
 	@Autowired
 	private MonthExpenseRepository monthExpenseRepository;
+	
+	public static final String[] monthsNames = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+			"Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
 	
 	public Optional<MonthExpense> find(Integer id) {
 		Optional<MonthExpense> obj = monthExpenseRepository.findById(id);
@@ -26,13 +28,24 @@ public class MonthExpenseService {
 	public void remove(Expense e) {
 		List<MonthExpense> list = getCompleteList();
 		for(MonthExpense me : list) {
-			if(ExpensesGetter.monthsNames[e.getMes_movimentacao()-1].equals(me.getMovimentation_month())) {
+			if(monthsNames[e.getMes_movimentacao()-1].equals(me.getMovimentation_month())) {
 				me.setTotal(me.getTotal()-Double.parseDouble(e.getValor_pago().replace(",", ".")));
 				monthExpenseRepository.save(me);
 				return;
 			}
+		}	
+	}
+	
+	void editMonth(Expense e, double expenseValue) {
+		Optional<MonthExpense> ome = monthExpenseRepository.findById(e.getMes_movimentacao());
+		MonthExpense me;
+		if (ome.isPresent()) {
+			me = ome.get();
+			me.setTotal(expenseValue + me.getTotal());
+		} else {
+			me = new MonthExpense(e.getMes_movimentacao(), monthsNames[e.getMes_movimentacao() - 1], expenseValue);
 		}
-		
+		monthExpenseRepository.save(me);
 	}
 	
 }
