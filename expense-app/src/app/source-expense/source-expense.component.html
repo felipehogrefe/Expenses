@@ -1,20 +1,80 @@
 <div>
     <table class="dataTable">
         <thead>
-        <tr >
-            <th style="text-align: left" class = "dataDesc">Fonte</th>
-            <th style="text-align: left" class = "dataValue">Valor</th>
-        </tr>
+            <tr>
+                <th style="text-align: left" class="dataDesc">Fonte</th>
+                <th style="text-align: left" class="dataValue">Valor</th>
+            </tr>
         </thead>
-        <tbody >
-        <tr *ngFor="let item of sourceExpenses">
-            <td style="text-align: left">{{ item.source_name }}</td>
-            <td style="text-align: left">{{ item.total | currency:'BRL' }}</td>
-        </tr>
-        <tr >
-            <th style="text-align: left" class = "dataDesc">Total</th>
-            <th style="text-align: left" class = "dataValue">{{total | currency:'BRL'}}</th>
-        </tr>
+        <tbody>
+            <tr *ngFor="let item of sourceExpenses">
+                <td style="text-align: left">{{ item.source_name }}</td>
+                <td style="text-align: left">{{ item.total | currency:'BRL' }}</td>
+            </tr>
+            <tr>
+                <th style="text-align: left" class="dataDesc">Total</th>
+                <th style="text-align: left" class="dataValue">{{total | currency:'BRL'}}</th>
+            </tr>
         </tbody>
     </table>
+</div>
+<br>
+<div>
+
+    <button type="button" class="button" (click)="showDataByCode()" style="margin:5px;">Excolher</button>
+    <div *ngIf="showByCode">
+        <table class="dataTable">
+            <thead>
+                <tr>
+                    <th style="text-align: left">Órgão</th>
+                    <th style="text-align: left">Unidade</th>
+                    <th style="text-align: left">Categoria Economica</th>
+                    <th style="text-align: left">Ano</th>
+                    <th style="text-align: left">Mês</th>
+                    <th style="text-align: left">Grupo Despesa</th>
+                    <th style="text-align: left">Modalidade Aplicação</th>
+                    <th style="text-align: left">Elemento</th>
+                    <th style="text-align: left">Subelemento</th>
+                    <th style="text-align: left">Função</th>
+                    <th style="text-align: left">Subfunção</th>
+                    <th style="text-align: left">Programa</th>
+                    <th style="text-align: left">Ação</th>
+                    <th style="text-align: left">Fonte</th>
+                    <th style="text-align: left">Empenho Modalidade</th>
+                    <th style="text-align: left">Indicador Subempenho</th>
+                    <th style="text-align: left">Credor</th>
+                    <th style="text-align: left">Modalidade Licitação</th>
+                    <th style="text-align: left">Valor Empenhado</th>
+                    <th style="text-align: left">Valor Liquidado</th>
+                    <th style="text-align: left">Valor Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of expenses">
+                    <td style="text-align: left">{{ item.orgao_nome }}</td>
+                    <td style="text-align: left">{{ item.unidade_nome }}</td>
+                    <td style="text-align: left">{{ item.categoria_economica_nome }}</td>
+                    <td style="text-align: left">{{ item.ano_movimentacao }}</td>
+                    <td style="text-align: left">{{ item.mes_movimentacao }}</td>
+                    <td style="text-align: left">{{ item.grupo_despesa_nome }}</td>
+                    <td style="text-align: left">{{ item.modalidade_aplicacao_nome }}</td>
+                    <td style="text-align: left">{{ item.elemento_nome }}</td>
+                    <td style="text-align: left">{{ item.subelemento_nome }}</td>
+                    <td style="text-align: left">{{ item.funcao_nome }}</td>
+                    <td style="text-align: left">{{ item.subfuncao_nome }}</td>
+                    <td style="text-align: left">{{ item.programa_nome }}</td>
+                    <td style="text-align: left">{{ item.acao_nome }}</td>
+                    <td style="text-align: left">{{ item.fonte_recurso_nome }}</td>
+                    <td style="text-align: left">{{ item.empenho_modalidade_nome }}</td>
+                    <td style="text-align: left">{{ item.indicador_subempenho }}</td>
+                    <td style="text-align: left">{{ item.credor_nome }}</td>
+                    <td style="text-align: left">{{ item.modalidade_licitacao_nome }}</td>
+                    <td style="text-align: left">{{ item.valor_empenhado | currency:'BRL' }}</td>
+                    <td style="text-align: left">{{ item.valor_liquidado | currency:'BRL' }}</td>
+                    <td style="text-align: left">{{ item.valor_pago | currency:'BRL' }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
 </div>

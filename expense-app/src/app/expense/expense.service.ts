@@ -13,14 +13,23 @@ export class ExpenseService {
   constructor(private http : Http) { }
 
   getExpenses(from:number): Observable<Expense[]>{
+    console.log(`http://localhost:8080/expenses/offset/${from}`)
     return this.http.get(`http://localhost:8080/expenses/offset/${from}`).pipe(map(response => response.json()));
   }
 
-  deleteExpense(expense:Expense): Observable<any>{
+  deleteExpense(expense:Expense):Observable<any>{
     return  this.http.delete(`http://localhost:8080/expenses/delete/${expense.id}`).pipe(map(response => response.json()));    
   }
 
   editExpense(expense:Expense): Observable<any>{
     return this.http.put('http://localhost:8080/expenses/edit/',expense).pipe(map(response => response.json()));        
+  }
+
+  getExpenseByCode(sourceName:string,code:number):Observable<Expense[]>{
+    return this.http.get(`http://localhost:8080/expenses/${sourceName}/${code}`).pipe(map(response => response.json()));       
+  }
+
+  getSourcesAvailableCodes():Observable<number[]>{
+    return this.http.get(`http://localhost:8080/expenses/sourceavailablecodes`).pipe(map(response => response.json()));
   }
 }

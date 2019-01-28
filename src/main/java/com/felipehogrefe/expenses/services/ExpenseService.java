@@ -3,9 +3,13 @@ package com.felipehogrefe.expenses.services;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
@@ -40,11 +44,6 @@ public class ExpenseService {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param chunk
-	 * @return a list of expenses, from the (chunk*chunkSize)th expense to the (chunk*chunkSize + chunkSize)th expense, ordered by id
-	 */
 	public List<Expense> getExpenseListChunk(int chunk) {
 		List<Expense> list = new ArrayList<Expense>();
 		List<Expense> expenseList = expenseRepository.findAll();
@@ -53,6 +52,7 @@ public class ExpenseService {
 			Expense e = expenseList.get(index++);
 			list.add(e);
 		}
+		System.out.println();
 		return list;
 	}
 
@@ -62,16 +62,21 @@ public class ExpenseService {
 
 	}
 
-	public List<Expense> getExpenseListByCode(String string, Integer code) {
+	public List<Expense> getExpenseListByCode(String fieldName, Integer code) {
 		List<Expense> list = new ArrayList<Expense>();
 		try {
-			List<Expense> completeList = getExpenseList();
-			for (Expense e : completeList) {
-				if ((int) Expense.class.getField(string).get(e) == code)
-					list.add(e);
+			Expense e = new Expense();
+			Expense.class.getField(fieldName).set(e, code);
+		
+			Example<Expense> example = Example.of(e);
+			List<Expense> completeList = expenseRepository.findAll(example);
+			System.out.println("-------------------");
+			System.out.println(completeList.size());
+			System.out.println("-------------------");
+			for (Expense e1 : completeList) {
+					list.add(e1);
 			}
 		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list;
@@ -110,5 +115,17 @@ public class ExpenseService {
 			monthExpenseService.editMonth(e, expenseValue);
 			sourceExpenseService.editSource(e, expenseValue);
 		}
+	}
+
+	public List<Integer> getSourcesAvailableCodes() {
+		List<Integer> list = new ArrayList<Integer>();
+		Set<Integer> hash = new HashSet<Integer>();
+
+		List<Expense> completeList = expenseRepository.findAll();
+		for(Expense e : completeList) {
+			hash.add(e.getFonte_recurso_codigo());
+		}
+		list.addAll(hash);
+		return list;
 	}	
 }

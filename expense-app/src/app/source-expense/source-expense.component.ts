@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SourceExpense } from './SourceExpense';
 import { SourceExpenseService } from './source-expense.service';
+import { Expense } from '../expense/Expense';
+import { ExpenseService } from '../expense/expense.service';
 
 @Component({
   selector: 'app-source-expense',
@@ -10,9 +12,13 @@ import { SourceExpenseService } from './source-expense.service';
 export class SourceExpenseComponent{
 
   sourceExpenses : SourceExpense[];
+  expenses : Expense[];
+  availableCode : number[]
   total : number = 0;
 
-  constructor(private sourceExpenseService : SourceExpenseService){}
+  showByCode = false;
+
+  constructor(private sourceExpenseService : SourceExpenseService, private expenseService : ExpenseService){}
 
   ngOnInit(){
     this.sourceExpenseService.getSourceExpenses()
@@ -22,6 +28,18 @@ export class SourceExpenseComponent{
           this.total += item.total
         }
       });
+
+      this.expenseService.getSourcesAvailableCodes()
+      .subscribe(availableCode => {
+        this.availableCode = availableCode
+      });
   }
 
+  showDataByCode(code:number):void{
+    this.expenseService.getExpenseByCode("fonte_recurso_codigo",code)
+      .subscribe(expenses => {
+        this.expenses = expenses       
+      });
+    this.showByCode=true;
+  }
 }

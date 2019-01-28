@@ -20,6 +20,7 @@ import com.felipehogrefe.expenses.services.ExpenseService;
 @RestController
 @RequestMapping(value="/expenses")
 public class ExpenseResource {
+	
 	@Autowired
 	private ExpenseService expenseService;
 	
@@ -28,6 +29,13 @@ public class ExpenseResource {
 	public ResponseEntity<List<Expense>> findAll(@PathVariable int from) {	
 		return ResponseEntity.ok(expenseService.getExpenseListChunk(from));
 	}
+	
+	@CrossOrigin
+	@GetMapping(value="/sourceavailablecodes")
+	public ResponseEntity<List<Integer>> getSourcesAvailableCodes() {	
+		return ResponseEntity.ok(expenseService.getSourcesAvailableCodes());
+	}
+	
 	
 	@CrossOrigin
 	@DeleteMapping(path="/delete/{id}")

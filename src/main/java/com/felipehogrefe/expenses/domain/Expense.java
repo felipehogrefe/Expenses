@@ -6,8 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+
 @Entity
-public class Expense implements Serializable, Comparable<Expense>{
+public class Expense implements Serializable, Comparable<Expense>{	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,10 +39,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	public Integer getId() {
 		return id;
 	}	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -371,6 +371,5 @@ public class Expense implements Serializable, Comparable<Expense>{
 
 	public void setValor_pago(String valor_pago) {
 		this.valor_pago = valor_pago;
-	}
-	
+	}	
 }
