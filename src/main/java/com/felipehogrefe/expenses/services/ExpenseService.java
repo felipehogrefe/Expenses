@@ -78,7 +78,7 @@ public class ExpenseService {
 	public List<Expense> getExpenseListByCode(String fieldName, Integer code) {
 		List<Expense> list = new ArrayList<Expense>();
 		try {
-			if (fieldName.equals("fonte_recurso_codigo")) {
+			if (fieldName.equals("fonteRecursoCodigo")) {
 				list = expenseRepository.findBySourceCode(code);
 			} 
 			
@@ -107,7 +107,7 @@ public class ExpenseService {
 		Field[] fields = Expense.class.getFields();
 		List<String> list = new ArrayList<>();
 		for (Field f : fields) {
-			if (f.getName().contains("codigo")) {
+			if (f.getName().contains("Codigo")) {
 				list.add(f.getName());
 			}
 		}

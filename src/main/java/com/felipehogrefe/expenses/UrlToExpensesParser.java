@@ -48,42 +48,10 @@ public class UrlToExpensesParser {
 		JSONObject json = new JSONObject(readJsonFromUrl(url).get("result").toString());
 		JSONParser parser = new JSONParser();
 		parser.addTypeHint(".records[]", Expense.class);
-		String newJson = json.toString();
 		Map<String, List<Expense>> result1 = parser.parse(Map.class, json.toString());
 		
 		List<Expense> list = result1.get("records");
 		
-
 		return list;
-	}
-	
-	String reparse(String s) {
-		String newString = s.replace("_a", "A")
-				.replace("_b", "B")
-				.replace("_c", "C")
-				.replace("_d", "D")
-				.replace("_e", "E")
-				.replace("_f", "F")
-				.replace("_g", "G")
-				.replace("_h", "H")
-				.replace("_i", "I")
-				.replace("_j", "J")
-				.replace("_k", "K")
-				.replace("_l", "L")
-				.replace("_m", "M")
-				.replace("_n", "N")
-				.replace("_o", "O")
-				.replace("_p", "P")
-				.replace("_q", "Q")
-				.replace("_r", "R")
-				.replace("_s", "S")
-				.replace("_t", "T")
-				.replace("_u", "U")
-				.replace("_v", "V")
-				.replace("_x", "X")
-				.replace("_w", "W")
-				.replace("_y", "Y")
-				.replace("_z", "Z");
-		return newString;
 	}
 }

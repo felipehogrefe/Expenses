@@ -7,9 +7,6 @@ import com.felipehogrefe.expenses.services.ExpenseService;
 
 public class ExpensesGetter {
 
-	
-	
-
 	private ExpenseRepository expenseRepository;
 	private ExpenseService expenseService;
 	private int limit;
@@ -43,7 +40,6 @@ public class ExpensesGetter {
 			}
 
 		} catch (JSONException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -39,7 +39,7 @@ export class SourceExpenseComponent{
   }
 
   showDataByCode(code:number):void{
-    this.expenseService.getExpenseByCode("fonte_recurso_codigo",this.selectedCode)
+    this.expenseService.getExpenseByCode("fonteRecursoCodigo",this.selectedCode)
       .subscribe(expenses => {
         this.expenses = expenses       
       });
