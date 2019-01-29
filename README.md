@@ -25,6 +25,7 @@ Instead of grouping the Expense data when needed for the views we use these clas
 
 ### Back-end
 With the data defined the implementation of the back-end with Spring Boot took into account the interaction between the classes. Notice that the uses should be able the edit only Expenses, but when an Expense is edited the values should be reflected into the other classes, adding or substracting values in the correct category, month or source.
+
 When the server is started it starts to download data from the source, that is done in a separeted thread so we don't have to wait for all the data to be downloaded, it's possible to define how many elements will be downloaded and the size of the elements list, see more at [Important Files](#IMPORTANT-FILES) section.
 
 ### Front-end
