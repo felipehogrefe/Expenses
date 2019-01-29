@@ -23,6 +23,9 @@ public class SourceExpenseService {
 		return sourceExpenseRepository.findAll(); 		
 	}
 
+	/** Given an expense and updates SourceExpense by updating the total of the category, notice that even if the total value becomes 0 its not removed.
+	 * @param The removed expense. 
+	 */
 	public void remove(Expense e) {
 		List<SourceExpense> list = getCompleteList();
 		for(SourceExpense se : list) {
@@ -34,6 +37,11 @@ public class SourceExpenseService {
 		}
 	}
 
+	/**
+	 * Given an expense and a new total value edits the corresponding SourceExpense by setting the new total, if it is present, or creates a new one.
+	 * @param e The expense that has been edited, its used to find the corresponding source. 
+	 * @param expenseValue A value to update the source total.
+	 */
 	public void editSource(Expense e, double expenseValue) {
 		Optional<SourceExpense> ose = sourceExpenseRepository.findById(e.getFonte_recurso_codigo());
 		SourceExpense se;

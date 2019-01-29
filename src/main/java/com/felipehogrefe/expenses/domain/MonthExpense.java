@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class MonthExpense implements Serializable, Comparable<MonthExpense>{
+public class MonthExpense implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -48,14 +48,6 @@ public class MonthExpense implements Serializable, Comparable<MonthExpense>{
 			return false;
 		return true;
 	}
-
-	@Override
-	public int compareTo(MonthExpense arg0) {
-		if(total>arg0.total) return 1;
-		else if(total<arg0.total) return -1;
-		return 0;
-	}
-
 
 	public Integer getId() {
 		return id;

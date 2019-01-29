@@ -19,6 +19,11 @@ public class CategoryExpenseResource {
 	@Autowired
 	private CategoryExpenseService categoryExpenseService;
 	
+	/**
+	 * Given an id queries the database in order to find a corresponding object.
+	 * @param id
+	 * @return A Http response with the object if there's a match, o a Http notFound otherwise.
+	 */
 	@CrossOrigin
 	@GetMapping(value="/{id}")
 	public  ResponseEntity<CategoryExpense> find(@PathVariable Integer id) {	
@@ -30,6 +35,10 @@ public class CategoryExpenseResource {
 		}
 	}
 	
+	/**
+	 * Queries the database using the corresponding service in order to find all the objects.
+	 * @return A http with the resulting list, if there no data in database the list will be empty
+	 */
 	@CrossOrigin
 	@GetMapping(value="/all")
 	public ResponseEntity<List<CategoryExpense>> findAll() {	

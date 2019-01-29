@@ -22,6 +22,12 @@ public class UrlToExpensesParser {
 		this.url = _url;
 	}
 
+	/**
+	 * Given a BufferedReader constructs a string from it.
+	 * @param rd The BufferedReader used as base for the to be constructed String
+	 * @return The constructed String
+	 * @throws IOException
+	 */
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
@@ -30,7 +36,14 @@ public class UrlToExpensesParser {
 		}
 		return sb.toString();
 	}
-
+	
+	/**
+	 * Download Expense elements in the form of a JSON from a source
+	 * @param url The URL from which the JDON will be downloaded
+	 * @return A JSONObject of the downloaded data
+	 * @throws IOException
+	 * @throws JSONException
+	 */
 	private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
 		InputStream is = new URL(url).openStream();
 		try {
@@ -43,6 +56,12 @@ public class UrlToExpensesParser {
 		}
 	}
 
+	/**
+	 * Maps the JSON downloaded from the preset URL to objects of the Expense class.
+	 * @return A list of the mapped expenses.
+	 * @throws JSONException
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Expense> getExpenses() throws JSONException, IOException {
 		JSONObject json = new JSONObject(readJsonFromUrl(url).get("result").toString());

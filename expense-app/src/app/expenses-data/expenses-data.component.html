@@ -14,7 +14,7 @@
             height="20" width="20" (click)="editExpense(item)"> </td>
         <td style="text-align: left" class="id">{{ item.id }}</td>
         <td style="text-align: left" class="value">{{ item.orgao_nome }}</td>
-        <td style="text-align: left" class="value">R${{ item.valor_liquidado}}</td>
+        <td style="text-align: left" class="value">{{ item.valor_total | currency:'BRL'}}</td>
       </tr>
     </tbody>
   </table>

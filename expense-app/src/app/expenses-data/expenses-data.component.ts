@@ -32,7 +32,13 @@ export class ExpensesDataComponent {
 
   reloadData(): void {
     this.expenseService.getExpenses(this.chunk).subscribe(
-      expenses => this.expenses = expenses);
+      expenses => {
+        this.expenses = expenses
+        for(let entry of this.expenses){
+          let total : number = parseFloat(entry.valor_liquidado.replace(",","."))
+          entry.valor_total = total
+        }
+      });
   }
 
   previousData(): void {

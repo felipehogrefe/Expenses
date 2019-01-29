@@ -11,10 +11,12 @@ export class ExpenseComponent implements OnInit {
 
   expenses : Expense[];
 
+  startingChunk = 0
+
   constructor(private expenseService : ExpenseService) { }
 
   ngOnInit() {
-    this.expenseService.getExpenses(1).subscribe(
+    this.expenseService.getExpenses(this.startingChunk).subscribe(
       expenses => this.expenses = expenses);
   }
 

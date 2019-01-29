@@ -83,12 +83,12 @@ public class Tests extends TestCase {
 	
 	@Test
 	public void checkGetByCodeWithWrongFieldName() {
-		assertTrue(expenseResource.getByCodigo("any_field", 1).getStatusCodeValue()==400);
+		assertTrue(expenseResource.getByCodigo("anyField", 1).getStatusCodeValue()==400);
 	}
 	
 	@Test
 	public void checkGetByCodeWithInexistingCode() {
-		assertTrue(expenseResource.getByCodigo("fonte_recurso_codigo", -10).getBody().size()==0);
+		assertTrue(expenseResource.getByCodigo("fonteRecursoCodigo", -10).getBody().size()==0);
 	}
 	
 	@Test
@@ -132,21 +132,21 @@ public class Tests extends TestCase {
 	@Test
 	public void checkIfAllCodeAtributesAreRetrieved() {
 		List<String> codeAtributes = new ArrayList<String>();
-		codeAtributes.add("orgao_codigo");
-		codeAtributes.add("unidade_codigo");
-		codeAtributes.add("categoria_economica_codigo");
-		codeAtributes.add("grupo_despesa_codigo");
-		codeAtributes.add("modalidade_aplicacao_codigo");
-		codeAtributes.add("elemento_codigo");
-		codeAtributes.add("subelemento_codigo");
-		codeAtributes.add("funcao_codigo");
-		codeAtributes.add("subfuncao_codigo");
-		codeAtributes.add("programa_codigo");
-		codeAtributes.add("acao_codigo");
-		codeAtributes.add("fonte_recurso_codigo");
-		codeAtributes.add("empenho_modalidade_codigo");
-		codeAtributes.add("credor_codigo");
-		codeAtributes.add("modalidade_licitacao_codigo");
+		codeAtributes.add("orgaoCodigo");
+		codeAtributes.add("unidadeCodigo");
+		codeAtributes.add("categoriaEconomicaCodigo");
+		codeAtributes.add("grupoDespesaCodigo");
+		codeAtributes.add("modalidadeAplicacaoCodigo");
+		codeAtributes.add("elementoCodigo");
+		codeAtributes.add("subelementoCodigo");
+		codeAtributes.add("funcaoCodigo");
+		codeAtributes.add("subfuncaoCodigo");
+		codeAtributes.add("programaCodigo");
+		codeAtributes.add("acaoCodigo");
+		codeAtributes.add("fonteRecursoCodigo");
+		codeAtributes.add("empenhoModalidadeCodigo");
+		codeAtributes.add("credorCodigo");
+		codeAtributes.add("modalidadeLicitacaoCodigo");
 		
 		List<String> list = expenseService.getCodeAtributesNamesList();
 		list.retainAll(codeAtributes);

@@ -18,6 +18,11 @@ public class SourceExpenseResource {
 	@Autowired
 	private SourceExpenseService sourceExpenseService;
 	
+	/**
+	 * Given an id queries the database in order to find a corresponding object.
+	 * @param id
+	 * @return A Http response with the object if there's a match, o a Http notFound otherwise.
+	 */
 	@CrossOrigin
 	@GetMapping(value="/{id}")
 	public ResponseEntity<SourceExpense> find(@PathVariable Integer id) {	
@@ -29,6 +34,10 @@ public class SourceExpenseResource {
 		}
 	}
 	
+	/**
+	 * Queries the database using the corresponding service in order to find all the objects.
+	 * @return A http with the resulting list, if there no data in database the list will be empty
+	 */
 	@CrossOrigin
 	@GetMapping(value="/all")
 	public ResponseEntity<List<SourceExpense>> findAll() {	

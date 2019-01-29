@@ -25,10 +25,13 @@ public class ExpensesGetter {
 		expenseRepository = _expenseRepository;
 	}
 
+	/**
+	 * Downloads chunks of data from the source in chunks of size querySize until a number =limit of elements are downloaded
+	 * @param querySize Number of elements in the downloaded set.
+	 */
 	public void getExpenses(int querySize) {
 		try {
 			for (int i = 0; i < limit; i += querySize) {
-
 				UrlToExpensesParser utep = new UrlToExpensesParser(
 						"http://dados.recife.pe.gov.br/api/action/datastore_search?"
 								+ "resource_id=d4d8a7f0-d4be-4397-b950-f0c991438111&limit=" + querySize + "&offset="

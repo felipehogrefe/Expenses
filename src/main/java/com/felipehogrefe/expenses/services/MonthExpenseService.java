@@ -25,6 +25,9 @@ public class MonthExpenseService {
 		return monthExpenseRepository.findAll(); 		
 	}
 
+	/** Given an expense and updates MonthExpense by updating the total of the category, notice that even if the total value becomes 0 its not removed.
+	 * @param The removed expense.
+	 */
 	public void remove(Expense e) {
 		List<MonthExpense> list = getCompleteList();
 		for(MonthExpense me : list) {
@@ -36,6 +39,11 @@ public class MonthExpenseService {
 		}	
 	}
 	
+	/**
+	 * Given an expense and a new total value edits the corresponding MonthExpense by setting the new total, if it is present, or creates a new one.
+	 * @param e The expense that has been edited, its used to find the corresponding month. 
+	 * @param expenseValue A value to update the month total.
+	 */
 	void editMonth(Expense e, double expenseValue) {
 		Optional<MonthExpense> ome = monthExpenseRepository.findById(e.getMes_movimentacao());
 		MonthExpense me;

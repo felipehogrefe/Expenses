@@ -42,6 +42,7 @@ export class Expense {
     public valor_empenhado : string;
     public valor_liquidado : string;
     public valor_pago : string
+    public valor_total : number
 
     constructor(json : JSON){
         for (var key in json) {

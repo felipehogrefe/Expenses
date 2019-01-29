@@ -23,6 +23,9 @@ public class CategoryExpenseService {
 		return categoryExpenseRepository.findAll(); 		
 	}
 
+	/** Given an expense and updates CategoryExpense by updating the total of the category, notice that even if the total value becomes 0 its not removed.
+	 * @param The removed expense 
+	 */
 	public void remove(Expense e) {
 		List<CategoryExpense> list = getCompleteList();
 		for(CategoryExpense ce : list) {
@@ -34,6 +37,11 @@ public class CategoryExpenseService {
 		}
 	}
 	
+	/**
+	 * Given an expense and a new total value edits the corresponding CategoryExpense by setting the new total, if it is present, or creates a new one.
+	 * @param e The expense that has been edited, its used to find the corresponding category. 
+	 * @param expenseValue A value to update the category total.
+	 */
 	public void editCategory(Expense e, double expenseValue) {
 		Optional<CategoryExpense> oce = categoryExpenseRepository.findById(e.getCategoria_economica_codigo());
 		CategoryExpense ce;

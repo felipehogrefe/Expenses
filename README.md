@@ -87,11 +87,11 @@ The service classes do all the interaction with the database using corresponding
 ## ExpensesApplication.java
 The application file, located at `~\Expenses\src\main\java\com\felipehogrefe\expenses\domain` is used to start the serve. We have three fields:
 
-- querySize
+- `querySize`
 	- Defines how many elements are download each time from the source.
-- limit
+- `limit`
 	- Defines how many elements are download in total from the source.
-- isTest
+- `isTest`
 	- A boolean to be seted as `true` when performing tests, or as `false` when running the server.
 
 ExpensesApplication calls ExpenseGetter in a thread, this way its possible to initiate the server even without all the data downloaded, so the data in the fron-end may change as it is downloaded in the back-end.

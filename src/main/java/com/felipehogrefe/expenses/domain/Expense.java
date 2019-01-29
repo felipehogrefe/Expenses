@@ -5,11 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Expense implements Serializable, Comparable<Expense>{	
+public class Expense implements Serializable{	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer _id;
 	
 	public int ano_movimentacao, mesMovimentacao, orgaoCodigo, unidadeCodigo, 
@@ -60,10 +59,22 @@ public class Expense implements Serializable, Comparable<Expense>{
 		result = prime * result + ((_id == null) ? 0 : _id.hashCode());
 		return result;
 	}
-
+	
 	@Override
-	public int compareTo(Expense p) {		
-		return 0;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Expense other = (Expense) obj;
+		if (_id == null) {
+			if (other._id != null)
+				return false;
+		} else if (!_id.equals(other._id))
+			return false;
+		return true;
 	}
 
 	public int get_id() {

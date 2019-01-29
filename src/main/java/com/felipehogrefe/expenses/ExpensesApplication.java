@@ -14,7 +14,7 @@ public class ExpensesApplication implements CommandLineRunner {
 	private static final int querySize = 100, limit = 200;
 	public static boolean isTest = false;
 	// 94178
-	
+
 	@Autowired
 	private ExpenseRepository expenseRepository;
 	@Autowired
@@ -26,14 +26,13 @@ public class ExpensesApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		if(!isTest) {
-		EventQueue.invokeLater(() -> {
-			ExpensesGetter eg = new ExpensesGetter(limit, expenseRepository, expenseService);
-			eg.getExpenses(querySize);
-		});
+		if (!isTest) {
+			EventQueue.invokeLater(() -> {
+				ExpensesGetter eg = new ExpensesGetter(limit, expenseRepository, expenseService);
+				eg.getExpenses(querySize);
+			});
 		}
 	}
-	
 	public static int getLimit() {
 		return limit;
 	}
