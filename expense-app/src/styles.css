@@ -10,12 +10,29 @@
     border-collapse: separate; 
     border-spacing:8px;
 }
+.fixed_header{
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: white;
+    border: 1;
+    border-spacing:2px;
+}
+.expenseTable{
+    background: white;
+    border: 1;
+    width: 100%;
+    border-spacing:2px;
+}
 .editTable{
     border: 1px solid black;
     width: 80%;
     border-collapse: separate; 
     border-spacing:8px;
     position: relative;
+}
+
+.bordered{
+    border: 1px solid black;
 }
 
 .dataValue{
@@ -73,13 +90,11 @@
     text-align: left;
     font-size: 80px;
     color: white;
-    font: sans-serif;
 }
 .editHeader{
     text-align: left;
     font-size: 48px;
     color: white;
-    font: sans-serif;
 }
 table.fixed { 
     table-layout:fixed; 

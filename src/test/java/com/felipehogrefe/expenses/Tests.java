@@ -16,7 +16,10 @@ import com.felipehogrefe.expenses.repositories.CategoryExpenseRepository;
 import com.felipehogrefe.expenses.repositories.ExpenseRepository;
 import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
 import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
+import com.felipehogrefe.expenses.services.CategoryExpenseService;
 import com.felipehogrefe.expenses.services.ExpenseService;
+import com.felipehogrefe.expenses.services.MonthExpenseService;
+import com.felipehogrefe.expenses.services.SourceExpenseService;
 
 import junit.framework.TestCase;
 
@@ -33,37 +36,66 @@ public class Tests extends TestCase {
 	private MonthExpenseRepository monthExpenseRepository;
 	@Autowired
 	private ExpenseService expenseService;
+	@Autowired
+	private CategoryExpenseService categoryExpenseService;
+	@Autowired
+	private MonthExpenseService monthExpenseService;
+	@Autowired
+	private SourceExpenseService sourceExpenseService;
 
 	Expense e1, e2, e3;
-	List<Expense> localExpenses;
 	static boolean setUpIsDone = false;
 
 	@Test
 	public void getExpenseListUsingChunks() {
 		List<Expense> list = expenseService.getExpenseListChunk(0);
-		assertTrue(list.size() == localExpenses.size());
-
+		assertTrue(list.size() == 3);
 	}
 
 	@Test
 	public void checkGetExpenseByAtributeCode() {
 		List<String> atributesList = expenseService.getAtributesNamesList();
 		for (String s : atributesList) {
-			List<Expense> list = expenseService.getExpenseListByCode(s, 1);
+			System.out.println(s);
+			List<Expense> list = expenseService.getExpenseListByCode(s, 2);			
 			assertTrue(list.size() == 1);
 		}
 	}
 
 	@Test
+	public void checkSourceValues() {
+		assertTrue(sourceExpenseService.find(1).get().getTotal() == 1.0);
+		assertTrue(sourceExpenseService.find(2).get().getTotal() == 2.0);
+		assertTrue(sourceExpenseService.find(3).get().getTotal() == 3.0);
+	}
+	
+	@Test
+	public void checkSourceElementsPresent() {
+		assertTrue(sourceExpenseService.getCompleteList().size() == 3);
+	}
+	
+	@Test
+	public void checkMonthValues() {
+		assertTrue(monthExpenseService.find(1).get().getTotal() == 1.0);
+		assertTrue(monthExpenseService.find(2).get().getTotal() == 2.0);
+		assertTrue(monthExpenseService.find(3).get().getTotal() == 3.0);
+	}
+
+	@Test
+	public void checkMonthElementsPresent() {
+		assertTrue(monthExpenseService.getCompleteList().size() == 3);
+	}
+
+	@Test
 	public void checkCategoryValues() {
-		assertTrue(categoryExpenseRepository.findById(1).get().getTotal() == 1.0);
-		assertTrue(categoryExpenseRepository.findById(2).get().getTotal() == 2.0);
-		assertTrue(categoryExpenseRepository.findById(3).get().getTotal() == 3.0);
+		assertTrue(categoryExpenseService.find(1).get().getTotal() == 1.0);
+		assertTrue(categoryExpenseService.find(2).get().getTotal() == 2.0);
+		assertTrue(categoryExpenseService.find(3).get().getTotal() == 3.0);
 	}
 
 	@Test
 	public void checkCategoryElementsPresent() {
-		assertTrue(categoryExpenseRepository.findAll().size() == 3);
+		assertTrue(categoryExpenseService.getCompleteList().size() == 3);
 	}
 
 	@Test
@@ -76,38 +108,74 @@ public class Tests extends TestCase {
 		Expense e = expenseRepository.findAll().get(0);
 		expenseService.removeExpense(e);
 		assertFalse(expenseRepository.findById(e.getId()).isPresent());
-		expenseService.editExpense(e);
+		System.out.println("8888888888888888888888888");
+		expenseService.addExpense(e);
 	}
 
 	@Test
 	public void removeExpenseAndCheckTotals() {
-		List<Expense> list = expenseRepository.findAll();
+		List<Expense> list = expenseService.getExpenseList();
 		for (Expense e : list) {
 			expenseService.removeExpense(e);
 		}
 
 		double total = 0;
-		for (CategoryExpense ce : categoryExpenseRepository.findAll()) {
+		for (CategoryExpense ce : categoryExpenseService.getCompleteList()) {
 			total += ce.getTotal();
 		}
 		assertTrue(total == 0);
 
 		total = 0;
-		for (MonthExpense me : monthExpenseRepository.findAll()) {
+		for (MonthExpense me : monthExpenseService.getCompleteList()) {
 			total += me.getTotal();
 		}
 		assertTrue(total == 0);
 
 		total = 0;
-		for (SourceExpense se : sourceExpenseRepository.findAll()) {
+		for (SourceExpense se : sourceExpenseService.getCompleteList()) {
 			total += se.getTotal();
 		}
 		assertTrue(total == 0);
 
 		for (Expense e : list) {
+			expenseService.addExpense(e);
+		}
+	}
+	
+	@Test
+	public void editExpenseAndCheckTotals() {
+		List<Expense> list = expenseRepository.findAll();
+		for (Expense e : list) {
+			System.out.println();
+			e.setValor_pago(""+Double.parseDouble(e.getValor_pago().replace(",","."))*10);			
+			e.setValor_liquidado(""+Double.parseDouble(e.getValor_liquidado().replace(",","."))*10);			
+			e.setValor_empenhado(""+Double.parseDouble(e.getValor_empenhado().replace(",","."))*10);			
+			expenseService.editExpense(e);
+		}
+
+		double total = 0;
+		for (CategoryExpense ce : categoryExpenseService.getCompleteList()) {
+			total += ce.getTotal();
+		}
+		assertTrue(total == 60);
+
+		total = 0;
+		for (MonthExpense me : monthExpenseService.getCompleteList()) {
+			total += me.getTotal();
+		}
+		assertTrue(total == 60);
+
+		total = 0;
+		for (SourceExpense se : sourceExpenseService.getCompleteList()) {
+			total += se.getTotal();
+		}
+		assertTrue(total == 60);
+
+		for (Expense e : list) {
 			expenseService.editExpense(e);
 		}
 	}
+
 
 	@Before
 	public void setUp() {
@@ -155,13 +223,12 @@ public class Tests extends TestCase {
 		e1.setSubelemento_codigo(1);
 		e1.setSubelemento_nome("1");
 		e1.setSubempenho(1);
-		e1.setSubfuncao_codigo(1);
-		e1.setSubfuncao_nome("1");
-		e1.setUnidade_codigo(1);
-		e1.setUnidade_nome("1");
-		e1.setValor_empenhado("1");
+		e1.setSubfuncao_codigo(1); 
 		e1.setValor_liquidado("1");
 		e1.setValor_pago("1");
+		e1.setValor_empenhado("1");
+		e1.setUnidade_codigo(1);
+		e1.setUnidade_nome("1");
 
 		e2 = new Expense();
 		e2.set_id(2);
@@ -255,8 +322,6 @@ public class Tests extends TestCase {
 		list.add(e1);
 		list.add(e2);
 		list.add(e3);
-
-		localExpenses = list;
 
 		expenseRepository.saveAll(list);
 

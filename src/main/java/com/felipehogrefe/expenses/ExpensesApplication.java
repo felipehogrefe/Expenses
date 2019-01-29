@@ -28,8 +28,8 @@ public class ExpensesApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		if(!isTest) {
 		EventQueue.invokeLater(() -> {
-			ExpensesGetter eg = new ExpensesGetter(querySize, expenseRepository, expenseService);
-			eg.getExpenses(limit);
+			ExpensesGetter eg = new ExpensesGetter(limit, expenseRepository, expenseService);
+			eg.getExpenses(querySize);
 		});
 		}
 	}

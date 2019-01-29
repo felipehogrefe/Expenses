@@ -1,6 +1,6 @@
 <div>
     <table class="dataTable">
-        <thead>
+        <thead style="border-bottom: 1px solid">
             <tr>
                 <th style="text-align: left" class="dataDesc">Fonte</th>
                 <th style="text-align: left" class="dataValue">Valor</th>
@@ -21,15 +21,16 @@
 <br>
 <div>
     <div *ngIf="available">
+        <a style="color: white">Exibir gastos da fonte (código) </a>
         <select [(ngModel)]="selectedCode">
             <option *ngFor="let x of availableCode">{{x}}</option>
         </select>
-        <button type="button" class="smallButton" (click)="showDataByCode()" style="margin:5px;">Excolher</button>
+        <button type="button" class="smallButton" (click)="showDataByCode()" style="margin:5px;">Escolher</button>
     </div>
     
-    <div *ngIf="showByCode">
-        <table class="dataTable">
-            <thead>
+    <div *ngIf="showByCode" style="overflow:auto; height: 400px;">
+        <table  class="fixed_header">
+            <thead style="border-bottom: 1px solid">
                 <tr>
                     <th style="text-align: left">Órgão</th>
                     <th style="text-align: left">Unidade</th>
@@ -54,7 +55,8 @@
                     <th style="text-align: left">Valor Pago (R$)</th>
                 </tr>
             </thead>
-            <tbody>
+            
+            <tbody >
                 <tr *ngFor="let item of expenses">
                     <td style="text-align: left">{{ item.orgao_nome }}</td>
                     <td style="text-align: left">{{ item.unidade_nome }}</td>

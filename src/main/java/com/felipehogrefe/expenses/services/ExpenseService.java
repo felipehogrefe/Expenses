@@ -2,12 +2,10 @@ package com.felipehogrefe.expenses.services;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.felipehogrefe.expenses.domain.Expense;
@@ -36,9 +34,25 @@ public class ExpenseService {
 	}
 
 	public boolean editExpense(Expense e) {
+		Optional<Expense> oldExpense = find(e.getId());
+		if (oldExpense.isPresent()) {
+			if (expenseRepository.save(e) != null) {
+				double newValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."))
+						- Double.parseDouble(oldExpense.get().getValor_liquidado().replace(",", "."));
+				editTotals(newValue, e);
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	public boolean addExpense(Expense e) {
 		if (expenseRepository.save(e) != null) {
-			defineTotals(Arrays.asList(e));
-			return true;
+			{				
+				addTotals(e);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -51,7 +65,6 @@ public class ExpenseService {
 			Expense e = expenseList.get(index++);
 			list.add(e);
 		}
-		System.out.println();
 		return list;
 	}
 
@@ -66,7 +79,9 @@ public class ExpenseService {
 		try {
 			if (fieldName.equals("fonte_recurso_codigo")) {
 				list = expenseRepository.findBySourceCode(code);
-			} else {
+			} 
+			
+			else {
 				List<Expense> completeList = expenseRepository.findAll();
 				for (Expense e : completeList) {
 					if ((int) Expense.class.getField(fieldName).get(e) == code)
@@ -105,13 +120,22 @@ public class ExpenseService {
 
 	public void defineTotals(List<Expense> list) {
 		for (Expense e : list) {
-
 			double expenseValue = Double.parseDouble(e.getValor_liquidado().replace(",", "."));
 
 			categoryExpenseService.editCategory(e, expenseValue);
 			monthExpenseService.editMonth(e, expenseValue);
 			sourceExpenseService.editSource(e, expenseValue);
 		}
+	}
+
+	public void addTotals(Expense expense) {
+		editTotals(Double.parseDouble(expense.getValor_liquidado().replace(",", ".")), expense);
+	}
+
+	public void editTotals(Double expenseValue, Expense expense) {
+		categoryExpenseService.editCategory(expense, expenseValue);
+		monthExpenseService.editMonth(expense, expenseValue);
+		sourceExpenseService.editSource(expense, expenseValue);
 	}
 
 	public List<Integer> getSourcesAvailableCodes() {

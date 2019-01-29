@@ -2,22 +2,17 @@ package com.felipehogrefe.expenses.domain;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 
 @Entity
 public class Expense implements Serializable, Comparable<Expense>{	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Integer id;
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer _id;
 	
-	public int _id, ano_movimentacao, mes_movimentacao, orgao_codigo, unidade_codigo, 
+	public int ano_movimentacao, mes_movimentacao, orgao_codigo, unidade_codigo, 
 	categoria_economica_codigo, grupo_despesa_codigo, modalidade_aplicacao_codigo,
 	elemento_codigo, subelemento_codigo, funcao_codigo, subfuncao_codigo, programa_codigo,
 	acao_codigo, fonte_recurso_codigo, empenho_ano, empenho_modalidade_codigo, empenho_numero,
@@ -31,20 +26,38 @@ public class Expense implements Serializable, Comparable<Expense>{
 		
 	@Override
 	public String toString() {
-		return "Expense [id=" + _id + ", orgaoNome=" + orgao_nome + ", dataMovimentacao=" + mes_movimentacao + "/"+ano_movimentacao+
-				", categoriaEconomicaCodigo=" + categoria_economica_codigo + ", fonteRecursoCodigo="+fonte_recurso_codigo+
-				", valorPago= "+valor_pago+"]";
+		return "Expense [_id=" + _id + ", ano_movimentacao=" + ano_movimentacao + ", mes_movimentacao="
+				+ mes_movimentacao + ", orgao_codigo=" + orgao_codigo + ", unidade_codigo=" + unidade_codigo
+				+ ", categoria_economica_codigo=" + categoria_economica_codigo + ", grupo_despesa_codigo="
+				+ grupo_despesa_codigo + ", modalidade_aplicacao_codigo=" + modalidade_aplicacao_codigo
+				+ ", elemento_codigo=" + elemento_codigo + ", subelemento_codigo=" + subelemento_codigo
+				+ ", funcao_codigo=" + funcao_codigo + ", subfuncao_codigo=" + subfuncao_codigo + ", programa_codigo="
+				+ programa_codigo + ", acao_codigo=" + acao_codigo + ", fonte_recurso_codigo=" + fonte_recurso_codigo
+				+ ", empenho_ano=" + empenho_ano + ", empenho_modalidade_codigo=" + empenho_modalidade_codigo
+				+ ", empenho_numero=" + empenho_numero + ", subempenho=" + subempenho + ", credor_codigo="
+				+ credor_codigo + ", modalidade_licitacao_codigo=" + modalidade_licitacao_codigo + ", orgao_nome="
+				+ orgao_nome + ", unidade_nome=" + unidade_nome + ", categoria_economica_nome="
+				+ categoria_economica_nome + ", grupo_despesa_nome=" + grupo_despesa_nome
+				+ ", modalidade_aplicacao_nome=" + modalidade_aplicacao_nome + ", elemento_nome=" + elemento_nome
+				+ ", subelemento_nome=" + subelemento_nome + ", funcao_nome=" + funcao_nome + ", subfuncao_nome="
+				+ subfuncao_nome + ", programa_nome=" + programa_nome + ", acao_nome=" + acao_nome
+				+ ", fonte_recurso_nome=" + fonte_recurso_nome + ", empenho_modalidade_nome=" + empenho_modalidade_nome
+				+ ", indicador_subempenho=" + indicador_subempenho + ", credor_nome=" + credor_nome
+				+ ", modalidade_licitacao_nome=" + modalidade_licitacao_nome + ", valor_empenhado=" + valor_empenhado
+				+ ", valor_liquidado=" + valor_liquidado + ", valor_pago=" + valor_pago + "]";
 	}
+	
+	
 
 	public Integer getId() {
-		return id;
+		return _id;
 	}	
 		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((_id == null) ? 0 : _id.hashCode());
 		return result;
 	}
 
@@ -58,6 +71,10 @@ public class Expense implements Serializable, Comparable<Expense>{
 	}
 
 	public void set_id(int _id) {
+		this._id = _id;
+	}
+	
+	public void setId(int _id) {
 		this._id = _id;
 	}
 
