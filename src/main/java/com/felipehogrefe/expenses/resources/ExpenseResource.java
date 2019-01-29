@@ -27,7 +27,12 @@ public class ExpenseResource {
 	@CrossOrigin
 	@GetMapping(value="/offset/{from}")
 	public ResponseEntity<List<Expense>> findAll(@PathVariable int from) {	
-		return ResponseEntity.ok(expenseService.getExpenseListChunk(from));
+		List<Expense> list = expenseService.getExpenseListChunk(from);
+		if(list==null) {
+			return ResponseEntity.badRequest().build();
+		}else {
+			return ResponseEntity.ok(expenseService.getExpenseListChunk(from));
+		}
 	}
 	
 	@CrossOrigin
@@ -44,8 +49,10 @@ public class ExpenseResource {
 		if(oe.isPresent()) {
 			Expense e = oe.get();
 			expenseService.removeExpense(e);		
+			return ResponseEntity.ok(HttpStatus.OK);
+		}else {
+			return ResponseEntity.badRequest().build();			
 		}
-		return ResponseEntity.ok(HttpStatus.OK);
 	}
 	
 	@CrossOrigin
@@ -60,34 +67,19 @@ public class ExpenseResource {
 	}
 
 	@CrossOrigin
-	@GetMapping(value="/month")
-	public ResponseEntity<List<Expense>> getByMonth() {	
-		return ResponseEntity.ok(expenseService.getExpenseList());
-	}
-	
-	@CrossOrigin
-	@GetMapping(value="/category")
-	public ResponseEntity<List<Expense>> getByCategory() {	
-		return ResponseEntity.ok(expenseService.getExpenseList());		
-	}
-	
-	@CrossOrigin
 	@GetMapping(value="/{att}/{code}")
-	public ResponseEntity<List<Expense>> getByCodigoOrgao(@PathVariable String att, @PathVariable Integer code) {	
-		return ResponseEntity.ok(expenseService.getExpenseListByCode(att, code));		
+	public ResponseEntity<List<Expense>> getByCodigo(@PathVariable String att, @PathVariable Integer code) {
+		List<Expense> list = expenseService.getExpenseListByCode(att, code);
+		if(list==null) return ResponseEntity.badRequest().build();
+		return ResponseEntity.ok(list);		
 	}
 	
 	@CrossOrigin
 	@GetMapping(value="/atributes")
-	public ResponseEntity<String> getAtributesNames() {	
-		return ResponseEntity.ok(expenseService.getAtributesNames());		
+	public ResponseEntity<List<String>> getAtributesNames() {	
+		return ResponseEntity.ok(expenseService.getCodeAtributesNamesList());		
 	}
-	
-	@CrossOrigin
-	@GetMapping(value="/source")
-	public ResponseEntity<List<Expense>> getBySource(){
-		return ResponseEntity.ok(expenseService.getExpenseList());
-	}
+
 	
 	@CrossOrigin
 	@PutMapping(value="/edit")

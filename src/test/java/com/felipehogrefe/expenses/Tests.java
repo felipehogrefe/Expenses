@@ -7,15 +7,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.felipehogrefe.expenses.domain.CategoryExpense;
 import com.felipehogrefe.expenses.domain.Expense;
 import com.felipehogrefe.expenses.domain.MonthExpense;
 import com.felipehogrefe.expenses.domain.SourceExpense;
-import com.felipehogrefe.expenses.repositories.CategoryExpenseRepository;
-import com.felipehogrefe.expenses.repositories.ExpenseRepository;
-import com.felipehogrefe.expenses.repositories.MonthExpenseRepository;
-import com.felipehogrefe.expenses.repositories.SourceExpenseRepository;
+import com.felipehogrefe.expenses.resources.CategoryExpenseResource;
+import com.felipehogrefe.expenses.resources.ExpenseResource;
+import com.felipehogrefe.expenses.resources.MonthExpenseResource;
+import com.felipehogrefe.expenses.resources.SourceExpenseResource;
 import com.felipehogrefe.expenses.services.CategoryExpenseService;
 import com.felipehogrefe.expenses.services.ExpenseService;
 import com.felipehogrefe.expenses.services.MonthExpenseService;
@@ -27,14 +28,6 @@ import junit.framework.TestCase;
 @SpringBootTest
 public class Tests extends TestCase {
 	@Autowired
-	private ExpenseRepository expenseRepository;
-	@Autowired
-	private CategoryExpenseRepository categoryExpenseRepository;
-	@Autowired
-	private SourceExpenseRepository sourceExpenseRepository;
-	@Autowired
-	private MonthExpenseRepository monthExpenseRepository;
-	@Autowired
 	private ExpenseService expenseService;
 	@Autowired
 	private CategoryExpenseService categoryExpenseService;
@@ -42,9 +35,138 @@ public class Tests extends TestCase {
 	private MonthExpenseService monthExpenseService;
 	@Autowired
 	private SourceExpenseService sourceExpenseService;
+	@Autowired
+	private ExpenseResource expenseResource;  
+	@Autowired
+	private CategoryExpenseResource categoryExpenseResource;  
+	@Autowired
+	private MonthExpenseResource monthExpenseResource;  
+	@Autowired
+	private SourceExpenseResource sourceExpenseResource;  
 
 	Expense e1, e2, e3;
 	static boolean setUpIsDone = false;
+	
+	@Test
+	public void removeExpenseFromResource() {
+		Expense e = expenseService.getExpenseList().get(0);
+		assertTrue(expenseResource.removeExpense(e.getId()).getStatusCodeValue()==200);
+		assertFalse(expenseService.find(e.getId()).isPresent());
+		expenseService.addExpense(e);
+	}
+	@Test
+	public void removeInexistingExpenseFromResource() {
+		assertTrue(expenseResource.removeExpense(-10).getStatusCodeValue()==400);
+	}
+	@Test
+	public void findExpense() {
+		assertTrue(expenseResource.find(1).getStatusCodeValue()==200);		
+	}
+	@Test
+	public void findInexistingExpense() {
+		assertTrue(expenseResource.find(-10).getStatusCodeValue()==404);		
+	}
+	@Test
+	public void checkGetAtributesNamesReturnCode() {
+		ResponseEntity<List<String>> response = expenseResource.getAtributesNames();
+		assertTrue(response.getStatusCodeValue()==200);		
+		List<String> list = response.getBody();
+		assertTrue(list.size()==15);		
+	}
+	
+	@Test
+	public void checkIfGetByCodeRetrievesOkforAtributesNamesList() {
+		for(String s : expenseService.getCodeAtributesNamesList()) {
+			assertTrue(expenseResource.getByCodigo(s, 1).getStatusCodeValue()==200);
+		}
+	}
+	
+	@Test
+	public void checkGetByCodeWithWrongFieldName() {
+		assertTrue(expenseResource.getByCodigo("any_field", 1).getStatusCodeValue()==400);
+	}
+	
+	@Test
+	public void checkGetByCodeWithInexistingCode() {
+		assertTrue(expenseResource.getByCodigo("fonte_recurso_codigo", -10).getBody().size()==0);
+	}
+	
+	@Test
+	public void getChunkBeyondTheData() {
+		assertTrue(expenseResource.findAll(4).getStatusCodeValue()==400);
+	}
+	
+	@Test
+	public void getFirstChunk() {
+		assertTrue(expenseResource.findAll(0).getStatusCodeValue()==200);	
+	}
+	
+	@Test
+	public void checkSourceFindResource() {
+		assertTrue(sourceExpenseResource.find(1).getStatusCodeValue()==200);
+		assertTrue(sourceExpenseResource.find(-10).getStatusCodeValue()==404);
+	}
+	@Test
+	public void checkSourceGetCompleteList() {
+		assertTrue(sourceExpenseResource.findAll().getStatusCodeValue()==200);
+	}
+	@Test
+	public void checkMonthFindResource() {
+		assertTrue(monthExpenseResource.find(1).getStatusCodeValue()==200);
+		assertTrue(monthExpenseResource.find(-10).getStatusCodeValue()==404);
+	}
+	@Test
+	public void checkMonthGetCompleteList() {
+		assertTrue(monthExpenseResource.findAll().getStatusCodeValue()==200);
+	}
+	@Test
+	public void checkCategoryFindResource() {
+		assertTrue(categoryExpenseResource.find(1).getStatusCodeValue()==200);
+		assertTrue(categoryExpenseResource.find(-10).getStatusCodeValue()==404);
+	}
+	@Test
+	public void checkCategoryGetCompleteList() {
+		assertTrue(categoryExpenseResource.findAll().getStatusCodeValue()==200);
+	}
+	
+	@Test
+	public void checkIfAllCodeAtributesAreRetrieved() {
+		List<String> codeAtributes = new ArrayList<String>();
+		codeAtributes.add("orgao_codigo");
+		codeAtributes.add("unidade_codigo");
+		codeAtributes.add("categoria_economica_codigo");
+		codeAtributes.add("grupo_despesa_codigo");
+		codeAtributes.add("modalidade_aplicacao_codigo");
+		codeAtributes.add("elemento_codigo");
+		codeAtributes.add("subelemento_codigo");
+		codeAtributes.add("funcao_codigo");
+		codeAtributes.add("subfuncao_codigo");
+		codeAtributes.add("programa_codigo");
+		codeAtributes.add("acao_codigo");
+		codeAtributes.add("fonte_recurso_codigo");
+		codeAtributes.add("empenho_modalidade_codigo");
+		codeAtributes.add("credor_codigo");
+		codeAtributes.add("modalidade_licitacao_codigo");
+		
+		List<String> list = expenseService.getCodeAtributesNamesList();
+		list.retainAll(codeAtributes);
+		assertTrue(list.size()==codeAtributes.size());
+	}
+	
+	@Test
+	public void checkCompleteList() {
+		assertTrue(expenseService.getExpenseList().size()==3);
+	}
+	
+	@Test
+	public void checkSourceAvailableCodes() {
+		List<Integer> codes = new ArrayList<>();
+		for(int i = 1;i<=3;i++) codes.add(i);
+		List<Integer> availableCodes = expenseService.getSourcesAvailableCodes();
+		int initialSize = availableCodes.size();
+		availableCodes.retainAll(codes);
+		assertTrue(availableCodes.size()==initialSize);
+	}
 
 	@Test
 	public void getExpenseListUsingChunks() {
@@ -54,7 +176,7 @@ public class Tests extends TestCase {
 
 	@Test
 	public void checkGetExpenseByAtributeCode() {
-		List<String> atributesList = expenseService.getAtributesNamesList();
+		List<String> atributesList = expenseService.getCodeAtributesNamesList();
 		for (String s : atributesList) {
 			System.out.println(s);
 			List<Expense> list = expenseService.getExpenseListByCode(s, 2);			
@@ -105,10 +227,9 @@ public class Tests extends TestCase {
 
 	@Test
 	public void removeExpense() {
-		Expense e = expenseRepository.findAll().get(0);
+		Expense e = expenseService.getExpenseList().get(0);
 		expenseService.removeExpense(e);
-		assertFalse(expenseRepository.findById(e.getId()).isPresent());
-		System.out.println("8888888888888888888888888");
+		assertFalse(expenseService.find(e.getId()).isPresent());
 		expenseService.addExpense(e);
 	}
 
@@ -144,9 +265,8 @@ public class Tests extends TestCase {
 	
 	@Test
 	public void editExpenseAndCheckTotals() {
-		List<Expense> list = expenseRepository.findAll();
+		List<Expense> list = expenseService.getExpenseList();
 		for (Expense e : list) {
-			System.out.println();
 			e.setValor_pago(""+Double.parseDouble(e.getValor_pago().replace(",","."))*10);			
 			e.setValor_liquidado(""+Double.parseDouble(e.getValor_liquidado().replace(",","."))*10);			
 			e.setValor_empenhado(""+Double.parseDouble(e.getValor_empenhado().replace(",","."))*10);			
@@ -323,8 +443,8 @@ public class Tests extends TestCase {
 		list.add(e2);
 		list.add(e3);
 
-		expenseRepository.saveAll(list);
-
+		expenseService.saveAll(list);
+		
 		expenseService.defineTotals(list);
 	}
 }

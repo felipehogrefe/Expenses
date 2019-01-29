@@ -61,6 +61,7 @@ public class ExpenseService {
 		List<Expense> list = new ArrayList<Expense>();
 		List<Expense> expenseList = expenseRepository.findAll();
 		int index = chunk * chunkSize;
+		if(index>expenseList.size()) return null;
 		while (list.size() < chunkSize && list.size() < (expenseList.size())) {
 			Expense e = expenseList.get(index++);
 			list.add(e);
@@ -88,19 +89,21 @@ public class ExpenseService {
 						list.add(e);
 				}
 			}
-		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch(NoSuchFieldException e) {
+			return null;
 		}
 		return list;
 	}
 
 	public String getAtributesNames() {
-		String json = new Gson().toJson(getAtributesNamesList());
+		String json = new Gson().toJson(getCodeAtributesNamesList());
 		return json;
 	}
 
-	public List<String> getAtributesNamesList() {
+	public List<String> getCodeAtributesNamesList() {
 		Field[] fields = Expense.class.getFields();
 		List<String> list = new ArrayList<>();
 		for (Field f : fields) {
@@ -128,11 +131,11 @@ public class ExpenseService {
 		}
 	}
 
-	public void addTotals(Expense expense) {
+	private void addTotals(Expense expense) {
 		editTotals(Double.parseDouble(expense.getValor_liquidado().replace(",", ".")), expense);
 	}
 
-	public void editTotals(Double expenseValue, Expense expense) {
+	private void editTotals(Double expenseValue, Expense expense) {
 		categoryExpenseService.editCategory(expense, expenseValue);
 		monthExpenseService.editMonth(expense, expenseValue);
 		sourceExpenseService.editSource(expense, expenseValue);
@@ -148,5 +151,9 @@ public class ExpenseService {
 		}
 		list.addAll(hash);
 		return list;
+	}
+
+	public void saveAll(List<Expense> list) {
+		expenseRepository.saveAll(list);		
 	}
 }
