@@ -11,11 +11,13 @@ export class ExpensesDataComponent {
 
   expenses: Expense[] = [];
   chunk: number = 0
-  
+  previousChunk : number
+
 
   edit = false;
   deleted = false;
   edited = false;
+  loadFailed = false;
 
   selectedExpense: Expense;
 
@@ -32,35 +34,36 @@ export class ExpensesDataComponent {
 
   reloadData(): void {
     this.expenseService.getExpenses(this.chunk).subscribe(
-      expenses => {
-        this.expenses = expenses
-        for(let entry of this.expenses){
-          let total : number = parseFloat(entry.valor_liquidado.replace(",","."))
-          entry.valor_total = total
-        }
-      });
+      expenses => {       
+          this.expenses = expenses
+          for (let entry of this.expenses) {
+            let total: number = parseFloat(entry.valor_liquidado.replace(",", "."))
+            entry.valor_total = total
+          }  
+      },
+      error => {
+        this.chunk=this.previousChunk
+      }
+
+      );
   }
 
   previousData(): void {
-    if(this.chunk>0){
+    if (this.chunk > 0) {
+      this.previousChunk=this.chunk
       this.chunk--
+      this.reloadData();
       
-      this.reloadData(); 
-      if (this.expenses.length == 0) {
-        this.chunk++
-      }
       this.selectedExpense = null
       this.edit = false
-      
+
     }
   }
 
-  nextData(): void {    
+  nextData(): void {
+    this.previousChunk=this.chunk
     this.chunk++
     this.reloadData();
-    if (this.expenses.length == 0) { 
-      this.chunk--
-    }
     this.selectedExpense = null
     this.edit = false
   }
@@ -96,6 +99,8 @@ export class ExpensesDataComponent {
     }, error => {
 
     })
+    this.selectedExpense = null
+    this.edit = false
 
   }
 

@@ -1,5 +1,7 @@
 package com.felipehogrefe.expenses.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class MonthExpenseService {
 		List<MonthExpense> list = getCompleteList();
 		for(MonthExpense me : list) {
 			if(monthsNames[e.getMes_movimentacao()-1].equals(me.getMovimentation_month())) {
-				me.setTotal(me.getTotal()-Double.parseDouble(e.getValor_pago().replace(",", ".")));
+				me.setTotal(me.getTotal().subtract(BigDecimal.valueOf(Double.parseDouble(e.getValor_pago().replace(",", "."))).setScale(2,RoundingMode.HALF_UP)));
 				monthExpenseRepository.save(me);
 				return;
 			}
@@ -47,11 +49,12 @@ public class MonthExpenseService {
 	void editMonth(Expense e, double expenseValue) {
 		Optional<MonthExpense> ome = monthExpenseRepository.findById(e.getMes_movimentacao());
 		MonthExpense me;
+		BigDecimal newValue = BigDecimal.valueOf(expenseValue);
 		if (ome.isPresent()) {
 			me = ome.get();
-			me.setTotal(expenseValue + me.getTotal());
+			me.setTotal(newValue.add(me.getTotal()));
 		} else {
-			me = new MonthExpense(e.getMes_movimentacao(), monthsNames[e.getMes_movimentacao() - 1], expenseValue);
+			me = new MonthExpense(e.getMes_movimentacao(), monthsNames[e.getMes_movimentacao() - 1], newValue);
 		}
 		monthExpenseRepository.save(me);
 	}

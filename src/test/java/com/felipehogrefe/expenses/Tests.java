@@ -1,5 +1,7 @@
 package com.felipehogrefe.expenses;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
@@ -46,6 +48,7 @@ public class Tests extends TestCase {
 
 	Expense e1, e2, e3;
 	static boolean setUpIsDone = false;
+	private static final BigDecimal zero = BigDecimal.valueOf(0).setScale(2,RoundingMode.HALF_UP);
 	
 	@Test
 	public void removeExpenseFromResource() {
@@ -178,7 +181,6 @@ public class Tests extends TestCase {
 	public void checkGetExpenseByAtributeCode() {
 		List<String> atributesList = expenseService.getCodeAtributesNamesList();
 		for (String s : atributesList) {
-			System.out.println(s);
 			List<Expense> list = expenseService.getExpenseListByCode(s, 2);			
 			assertTrue(list.size() == 1);
 		}
@@ -186,9 +188,9 @@ public class Tests extends TestCase {
 
 	@Test
 	public void checkSourceValues() {
-		assertTrue(sourceExpenseService.find(1).get().getTotal() == 1.0);
-		assertTrue(sourceExpenseService.find(2).get().getTotal() == 2.0);
-		assertTrue(sourceExpenseService.find(3).get().getTotal() == 3.0);
+		assertTrue(sourceExpenseService.find(1).get().getTotal().equals(BigDecimal.valueOf(1.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(sourceExpenseService.find(2).get().getTotal().equals(BigDecimal.valueOf(2.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(sourceExpenseService.find(3).get().getTotal().equals(BigDecimal.valueOf(3.0).setScale(2,RoundingMode.HALF_UP)));
 	}
 	
 	@Test
@@ -198,9 +200,9 @@ public class Tests extends TestCase {
 	
 	@Test
 	public void checkMonthValues() {
-		assertTrue(monthExpenseService.find(1).get().getTotal() == 1.0);
-		assertTrue(monthExpenseService.find(2).get().getTotal() == 2.0);
-		assertTrue(monthExpenseService.find(3).get().getTotal() == 3.0);
+		assertTrue(monthExpenseService.find(1).get().getTotal().equals(BigDecimal.valueOf(1.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(monthExpenseService.find(2).get().getTotal().equals(BigDecimal.valueOf(2.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(monthExpenseService.find(3).get().getTotal().equals(BigDecimal.valueOf(3.0).setScale(2,RoundingMode.HALF_UP)));
 	}
 
 	@Test
@@ -210,9 +212,9 @@ public class Tests extends TestCase {
 
 	@Test
 	public void checkCategoryValues() {
-		assertTrue(categoryExpenseService.find(1).get().getTotal() == 1.0);
-		assertTrue(categoryExpenseService.find(2).get().getTotal() == 2.0);
-		assertTrue(categoryExpenseService.find(3).get().getTotal() == 3.0);
+		assertTrue(categoryExpenseService.find(1).get().getTotal().equals(BigDecimal.valueOf(1.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(categoryExpenseService.find(2).get().getTotal().equals(BigDecimal.valueOf(2.0).setScale(2,RoundingMode.HALF_UP)));
+		assertTrue(categoryExpenseService.find(3).get().getTotal().equals(BigDecimal.valueOf(3.0).setScale(2,RoundingMode.HALF_UP)));
 	}
 
 	@Test
@@ -240,23 +242,23 @@ public class Tests extends TestCase {
 			expenseService.removeExpense(e);
 		}
 
-		double total = 0;
+		BigDecimal total = zero;
 		for (CategoryExpense ce : categoryExpenseService.getCompleteList()) {
-			total += ce.getTotal();
+			total=total.add(ce.getTotal());
 		}
-		assertTrue(total == 0);
+		assertTrue(total.equals(zero));
 
-		total = 0;
+		total = zero;
 		for (MonthExpense me : monthExpenseService.getCompleteList()) {
-			total += me.getTotal();
+			total = total.add(me.getTotal());
 		}
-		assertTrue(total == 0);
+		assertTrue(total.equals(zero));
 
-		total = 0;
+		total = zero;
 		for (SourceExpense se : sourceExpenseService.getCompleteList()) {
-			total += se.getTotal();
+			total = total.add(se.getTotal());
 		}
-		assertTrue(total == 0);
+		assertTrue(total.equals(zero));
 
 		for (Expense e : list) {
 			expenseService.addExpense(e);
@@ -265,6 +267,7 @@ public class Tests extends TestCase {
 	
 	@Test
 	public void editExpenseAndCheckTotals() {
+		BigDecimal sixty = BigDecimal.valueOf(60).setScale(2,RoundingMode.HALF_UP);
 		List<Expense> list = expenseService.getExpenseList();
 		for (Expense e : list) {
 			e.setValor_pago(""+Double.parseDouble(e.getValor_pago().replace(",","."))*10);			
@@ -273,23 +276,23 @@ public class Tests extends TestCase {
 			expenseService.editExpense(e);
 		}
 
-		double total = 0;
+		BigDecimal total = zero;
 		for (CategoryExpense ce : categoryExpenseService.getCompleteList()) {
-			total += ce.getTotal();
+			total = total.add( ce.getTotal());
 		}
-		assertTrue(total == 60);
+		assertTrue(total.equals(sixty));
 
-		total = 0;
+		total = zero;
 		for (MonthExpense me : monthExpenseService.getCompleteList()) {
-			total += me.getTotal();
+			total = total.add(me.getTotal());
 		}
-		assertTrue(total == 60);
+		assertTrue(total.equals(sixty));
 
-		total = 0;
+		total = zero;
 		for (SourceExpense se : sourceExpenseService.getCompleteList()) {
-			total += se.getTotal();
+			total = total.add(se.getTotal());
 		}
-		assertTrue(total == 60);
+		assertTrue(total.equals(sixty));
 
 		for (Expense e : list) {
 			expenseService.editExpense(e);

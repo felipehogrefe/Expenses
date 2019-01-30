@@ -1,3 +1,4 @@
+
 # PROJECT REQUIREMENTS
 
 -   The system must have three views:
@@ -11,7 +12,7 @@
 ## Design choices
 ### Data
 The data acquired from the provided server have been encapsulated in one single class, which we will reffer as **Expense**. As the data comes in JSON form it's easy to parse it to object fields and then to the database as long as we use compatible names for the fields.
-The data used is that find in the `d4d8a7f0-d4be-4397-b950-f0c991438111` set of the **Dados Recife API**, found at http://dados.recife.pe.gov.br/dataset/despesas-orcamentarias.
+The data used is that found in the `d4d8a7f0-d4be-4397-b950-f0c991438111` set of the **Dados Recife API**, found at http://dados.recife.pe.gov.br/dataset/despesas-orcamentarias. Notice that the number of elements in this database is 94178.
 
 Besides the Expense class other three classes were created:
 - **CategoryExpense**
@@ -21,12 +22,12 @@ Besides the Expense class other three classes were created:
 - **SourceExpense**
 	- Encapsulates total expenses by source.
 
-Instead of grouping the Expense data when needed for the views we use these classes to store the totals. This way we update the database every time an Expense is added, removed or edited, notice that doing this we decreases the number of accesses to the database when we need to accesses the totals, as long as the requests for totals are greated than the Expense edits number. We no longer need to select all the data and group it when totals are requested.
+Instead of querying and grouping the Expense data when needed for the views we use these classes to store the totals. This way we update the database every time an Expense is added, removed or edited, notice that doing this we decreases the number of accesses to the database when we need to accesses the totals, as long as the requests for totals are greated than the Expense edits number. We no longer need to select all the data and group it when totals are requested.
 
 ### Back-end
 With the data defined the implementation of the back-end with Spring Boot took into account the interaction between the classes. Notice that the uses should be able the edit only Expenses, but when an Expense is edited the values should be reflected into the other classes, adding or substracting values in the correct category, month or source.
 
-When the server is started it starts to download data from the source, that is done in a separeted thread so we don't have to wait for all the data to be downloaded, it's possible to define how many elements will be downloaded and the size of the elements list, see more at [Important Files](#IMPORTANT-FILES) section.
+When the server is started it starts to download data from the source, that is done in a separeted thread so we don't have to wait for all the data to be downloaded, it's possible to define how many elements will be downloaded and the size of the elements list, see more at [Expenses Application](#ExpensesApplication.java) section.
 
 ### Front-end
 As there aren't much for the user to do a single page should sufficient for the interaction, all data can be viewed in the same page. In order to conceive a comprehensive only a view should be visible at a time, so components were used to display only the selected data.
@@ -92,10 +93,10 @@ The application file, located at `~\Expenses\src\main\java\com\felipehogrefe\exp
 	- Defines how many elements are download each time from the source.
 - `limit`
 	- Defines how many elements are download in total from the source.
-- `isTest`
-	- A boolean to be seted as `true` when performing tests, or as `false` when running the server.
 
 ExpensesApplication calls ExpenseGetter in a thread, this way its possible to initiate the server even without all the data downloaded, so the data in the fron-end may change as it is downloaded in the back-end.
+
+As the number of elements in the database is 94178, it's recomended to don't set `limit` higher than that.
 
 ## ExpenseGetter.java and UrlToExpensesParser.java
 ExpenseGetter is the class used the download elements from the source, its simply a loop from `0` to `limit` with increasing pace of `querySize` that accesses the source via URL. When the data is downloaded and parsed its saved into the database and category, month and source tables are updated.

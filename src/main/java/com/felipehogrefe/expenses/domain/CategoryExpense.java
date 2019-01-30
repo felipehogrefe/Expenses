@@ -1,6 +1,7 @@
 package com.felipehogrefe.expenses.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,12 +15,12 @@ public class CategoryExpense implements Serializable{
 	
 	private int category_code;
 	private String category_name;
-	private double total;
+	private BigDecimal total;
 	
 	
 	public CategoryExpense() {}
 	
-	public CategoryExpense(Integer id, int category_code, String category_name, double total) {
+	public CategoryExpense(Integer id, int category_code, String category_name, BigDecimal total) {
 		super();
 		this.id = id;
 		this.category_code = category_code;
@@ -82,12 +83,12 @@ public class CategoryExpense implements Serializable{
 	}
 
 
-	public double getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
 
 
-	public void setTotal(double total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 	

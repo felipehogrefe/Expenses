@@ -84,7 +84,7 @@ public class ExpenseService {
 		List<Expense> list = new ArrayList<Expense>();
 		List<Expense> expenseList = expenseRepository.findAll();
 		int index = chunk * chunkSize;
-		if (index > expenseList.size())
+		if (index >= expenseList.size())
 			return null;
 		//We need a check for the last chunk, the size o expenseList might not be a multiple of chunkSize
 		while (list.size() < chunkSize && list.size() < (expenseList.size())) {

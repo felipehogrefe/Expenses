@@ -1,5 +1,7 @@
 package com.felipehogrefe.expenses.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class SourceExpenseService {
 		List<SourceExpense> list = getCompleteList();
 		for(SourceExpense se : list) {
 			if(e.getFonte_recurso_codigo()==se.getSource_code()) {
-				se.setTotal(se.getTotal()-Double.parseDouble(e.getValor_pago().replace(",", ".")));
+				se.setTotal(se.getTotal().subtract(BigDecimal.valueOf(Double.parseDouble(e.getValor_pago().replace(",", "."))).setScale(2,RoundingMode.HALF_UP)));
 				sourceExpenseRepository.save(se);
 				return;
 			}
@@ -45,12 +47,13 @@ public class SourceExpenseService {
 	public void editSource(Expense e, double expenseValue) {
 		Optional<SourceExpense> ose = sourceExpenseRepository.findById(e.getFonte_recurso_codigo());
 		SourceExpense se;
+		BigDecimal newValue = BigDecimal.valueOf(expenseValue);
 		if (ose.isPresent()) {
 			se = ose.get();
-			se.setTotal(expenseValue + se.getTotal());
+			se.setTotal(newValue.add(se.getTotal()));
 		} else {
 			se = new SourceExpense(e.getFonte_recurso_codigo(), e.getFonte_recurso_codigo(), e.getFonte_recurso_nome(),
-					expenseValue);
+					newValue);
 		}
 		sourceExpenseRepository.save(se);
 	}
