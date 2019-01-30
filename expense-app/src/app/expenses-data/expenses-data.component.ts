@@ -72,6 +72,7 @@ export class ExpensesDataComponent {
     this.expenseService.editExpense(this.selectedExpense).subscribe(response => {
       if (response === "OK") {
         this.edit = false;
+        this.deleted = false;
         this.selectedExpense = null
         this.edited = true
         this.reloadData();
@@ -89,6 +90,7 @@ export class ExpensesDataComponent {
     this.expenseService.deleteExpense(this.selectedExpense).subscribe(response => {
       console.log(response);
       if (response === "OK") {
+        this.edited = false
         this.deleted = true;
         this.selectedExpense = null
         this.edit = false
