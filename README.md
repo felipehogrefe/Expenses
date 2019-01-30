@@ -62,7 +62,7 @@ https://spring.io/tools
 # RUNNING THE APPLICATION
 Using the downloaded Spring Boot tool, import the project and run the `ExpensesApplication` class to run the back-end server. It can be accessed at http://localhost:8080.
 A console for the database is available at http://localhost:8080/h2-console, with username: `sa` and empty password.
-For the front-end navegate to the expenses-app folder (`~\Expenses\expense-app`) and execute the command `ng serve`.
+For the front-end navegate to the expenses-app folder (`~\Expenses\expense-app`) and execute the command `ng serve`.  The web application can be accessed at http://localhost:4200.
 
 # IMPORTANT FILES 
 
