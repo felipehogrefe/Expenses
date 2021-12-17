@@ -68,7 +68,7 @@ For the front-end navegate to the expenses-app folder (`~\Expenses\expense-app`)
 
 ## Resource Files
 
-Every data class have a associated resource class, located at `~\Expenses\src\main\java\com\felipehogrefe\expenses\resources`, they are:
+Every data class have an associated resource class, located at `~\Expenses\src\main\java\com\felipehogrefe\expenses\resources`, they are:
 
 - ExpenseResource.java
 - CategoryExpenseResource.java
