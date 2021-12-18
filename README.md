@@ -87,7 +87,7 @@ Like resources, every data class have a associated service class located at `~\E
 The service classes do all the interaction with the database using corresponding repositories, they serve the resource classes doing the working needed to edit the data, for example, when an expense is edited the ExpenseService will edit categories, months and sources related to that expense.
 
 ## ExpensesApplication.java
-The application file, located at `~\Expenses\src\main\java\com\felipehogrefe\expenses\domain` is used to start the serve. We have three fields:
+The application file, located at `~\Expenses\src\main\java\com\felipehogrefe\expenses\domain` is used to start the server. We have two fields:
 
 - `querySize`
 	- Defines how many elements are download each time from the source.
